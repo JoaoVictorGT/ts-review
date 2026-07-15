@@ -1,0 +1,450 @@
+# Data Audit Report — Hotel_Reviews.csv
+
+Auditoria automatizada gerada por `src/data_quality.py`. Read-only sobre o dataset bruto (sem limpeza).
+
+## 1. Estrutura
+- **n_rows**: 515738
+- **n_cols**: 17
+- **memory_mb**: 427.89
+- **dtypes**:
+  - **Hotel_Address**: object
+  - **Additional_Number_of_Scoring**: int64
+  - **Review_Date**: object
+  - **Average_Score**: float64
+  - **Hotel_Name**: object
+  - **Reviewer_Nationality**: object
+  - **Negative_Review**: object
+  - **Review_Total_Negative_Word_Counts**: int64
+  - **Total_Number_of_Reviews**: int64
+  - **Positive_Review**: object
+  - **Review_Total_Positive_Word_Counts**: int64
+  - **Total_Number_of_Reviews_Reviewer_Has_Given**: int64
+  - **Reviewer_Score**: float64
+  - **Tags**: object
+  - **days_since_review**: object
+  - **lat**: float64
+  - **lng**: float64
+- **cardinality**:
+  - **Hotel_Address**: 1493
+  - **Additional_Number_of_Scoring**: 480
+  - **Review_Date**: 731
+  - **Average_Score**: 34
+  - **Hotel_Name**: 1492
+  - **Reviewer_Nationality**: 227
+  - **Negative_Review**: 330011
+  - **Review_Total_Negative_Word_Counts**: 402
+  - **Total_Number_of_Reviews**: 1142
+  - **Positive_Review**: 412601
+  - **Review_Total_Positive_Word_Counts**: 365
+  - **Total_Number_of_Reviews_Reviewer_Has_Given**: 198
+  - **Reviewer_Score**: 37
+  - **Tags**: 55242
+  - **days_since_review**: 731
+  - **lat**: 1472
+  - **lng**: 1472
+- **numeric_columns**:
+  - Additional_Number_of_Scoring
+  - Average_Score
+  - Review_Total_Negative_Word_Counts
+  - Total_Number_of_Reviews
+  - Review_Total_Positive_Word_Counts
+  - Total_Number_of_Reviews_Reviewer_Has_Given
+  - Reviewer_Score
+  - lat
+  - lng
+- **text_columns**:
+  - Negative_Review
+  - Positive_Review
+- **categorical_columns**:
+  - Hotel_Address
+  - Review_Date
+  - Hotel_Name
+  - Reviewer_Nationality
+  - Tags
+  - days_since_review
+
+## 2. Health checks (por coluna)
+- **Hotel_Address**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+  - **empty_string**: 0
+  - **whitespace_only**: 0
+  - **leading_or_trailing_space**: 405
+  - **invisible_chars**:
+    - **tab**: 0
+    - **newline**: 0
+    - **carriage_return**: 0
+    - **non_breaking_space**: 0
+    - **zero_width_space**: 0
+    - **zero_width_nbsp**: 0
+- **Additional_Number_of_Scoring**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+- **Review_Date**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+  - **empty_string**: 0
+  - **whitespace_only**: 0
+  - **leading_or_trailing_space**: 0
+  - **invisible_chars**:
+    - **tab**: 0
+    - **newline**: 0
+    - **carriage_return**: 0
+    - **non_breaking_space**: 0
+    - **zero_width_space**: 0
+    - **zero_width_nbsp**: 0
+- **Average_Score**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+- **Hotel_Name**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+  - **empty_string**: 0
+  - **whitespace_only**: 0
+  - **leading_or_trailing_space**: 1855
+  - **invisible_chars**:
+    - **tab**: 0
+    - **newline**: 0
+    - **carriage_return**: 0
+    - **non_breaking_space**: 0
+    - **zero_width_space**: 0
+    - **zero_width_nbsp**: 0
+- **Reviewer_Nationality**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+  - **empty_string**: 0
+  - **whitespace_only**: 523
+  - **leading_or_trailing_space**: 515738
+  - **invisible_chars**:
+    - **tab**: 0
+    - **newline**: 0
+    - **carriage_return**: 0
+    - **non_breaking_space**: 0
+    - **zero_width_space**: 0
+    - **zero_width_nbsp**: 0
+- **Negative_Review**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+  - **empty_string**: 0
+  - **whitespace_only**: 849
+  - **leading_or_trailing_space**: 387842
+  - **invisible_chars**:
+    - **tab**: 0
+    - **newline**: 0
+    - **carriage_return**: 0
+    - **non_breaking_space**: 0
+    - **zero_width_space**: 0
+    - **zero_width_nbsp**: 0
+- **Review_Total_Negative_Word_Counts**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+- **Total_Number_of_Reviews**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+- **Positive_Review**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+  - **empty_string**: 0
+  - **whitespace_only**: 183
+  - **leading_or_trailing_space**: 479779
+  - **invisible_chars**:
+    - **tab**: 0
+    - **newline**: 0
+    - **carriage_return**: 0
+    - **non_breaking_space**: 0
+    - **zero_width_space**: 0
+    - **zero_width_nbsp**: 0
+- **Review_Total_Positive_Word_Counts**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+- **Total_Number_of_Reviews_Reviewer_Has_Given**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+- **Reviewer_Score**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+- **Tags**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+  - **empty_string**: 0
+  - **whitespace_only**: 0
+  - **leading_or_trailing_space**: 0
+  - **invisible_chars**:
+    - **tab**: 0
+    - **newline**: 0
+    - **carriage_return**: 0
+    - **non_breaking_space**: 0
+    - **zero_width_space**: 0
+    - **zero_width_nbsp**: 0
+- **days_since_review**:
+  - **missing**: 0
+  - **missing_pct**: 0.0
+  - **empty_string**: 0
+  - **whitespace_only**: 0
+  - **leading_or_trailing_space**: 0
+  - **invisible_chars**:
+    - **tab**: 0
+    - **newline**: 0
+    - **carriage_return**: 0
+    - **non_breaking_space**: 0
+    - **zero_width_space**: 0
+    - **zero_width_nbsp**: 0
+- **lat**:
+  - **missing**: 3268
+  - **missing_pct**: 0.6337
+- **lng**:
+  - **missing**: 3268
+  - **missing_pct**: 0.6337
+
+## 3. Placeholders de texto ('No Negative' / 'No Positive')
+- **negative_placeholder**: 127890
+- **negative_placeholder_pct**: 24.8
+- **positive_placeholder**: 35946
+- **positive_placeholder_pct**: 6.97
+- **both_empty**: 127
+- **both_empty_pct**: 0.02
+
+## 4. Duplicados
+- **full_row_duplicates**: 526
+- **review_level_duplicates**: 565
+- **unique_hotels**: 1492
+- **hotels_with_multiple_addresses**: 1
+- **hotels_with_multiple_avg_scores**: 1
+- **hotels_multi_score_examples**:
+  - **Hotel Regina**:
+    - **n_addresses**: 3
+    - **n_avg_scores**: 2
+
+## 5. Datas & integridade temporal
+- **invalid_dates**: 0
+- **min_date**: 2015-08-04
+- **max_date**: 2017-08-03
+- **span_days**: 730
+- **future_dates_vs_today**: 0
+- **reference_date**: 2017-08-03
+- **days_since_review_inconsistent**: 0
+
+## 6. Distribuições numéricas (skew/kurtosis/outliers)
+- **Additional_Number_of_Scoring**:
+  - **count**: 515738
+  - **mean**: 498.0818
+  - **std**: 500.5385
+  - **min**: 1.0
+  - **median**: 341.0
+  - **max**: 2682.0
+  - **skewness**: 2.2077
+  - **kurtosis**: 5.7519
+  - **n_outliers_iqr**: 29579
+  - **outlier_pct**: 5.74
+  - **iqr_fences**:
+    - -567.5
+    - 1396.5
+- **Average_Score**:
+  - **count**: 515738
+  - **mean**: 8.3975
+  - **std**: 0.548
+  - **min**: 5.2
+  - **median**: 8.4
+  - **max**: 9.8
+  - **skewness**: -0.5452
+  - **kurtosis**: 0.4224
+  - **n_outliers_iqr**: 9564
+  - **outlier_pct**: 1.85
+  - **iqr_fences**:
+    - 7.05
+    - 9.85
+- **Review_Total_Negative_Word_Counts**:
+  - **count**: 515738
+  - **mean**: 18.5395
+  - **std**: 29.6908
+  - **min**: 0.0
+  - **median**: 9.0
+  - **max**: 408.0
+  - **skewness**: 4.4079
+  - **kurtosis**: 31.4133
+  - **n_outliers_iqr**: 39159
+  - **outlier_pct**: 7.59
+  - **iqr_fences**:
+    - -29.5
+    - 54.5
+- **Total_Number_of_Reviews**:
+  - **count**: 515738
+  - **mean**: 2743.7439
+  - **std**: 2317.4649
+  - **min**: 43.0
+  - **median**: 2134.0
+  - **max**: 16670.0
+  - **skewness**: 2.0862
+  - **kurtosis**: 6.421
+  - **n_outliers_iqr**: 25827
+  - **outlier_pct**: 5.01
+  - **iqr_fences**:
+    - -2517.0
+    - 7291.0
+- **Review_Total_Positive_Word_Counts**:
+  - **count**: 515738
+  - **mean**: 17.7765
+  - **std**: 21.8042
+  - **min**: 0.0
+  - **median**: 11.0
+  - **max**: 395.0
+  - **skewness**: 4.1911
+  - **kurtosis**: 32.9427
+  - **n_outliers_iqr**: 36329
+  - **outlier_pct**: 7.04
+  - **iqr_fences**:
+    - -20.5
+    - 47.5
+- **Total_Number_of_Reviews_Reviewer_Has_Given**:
+  - **count**: 515738
+  - **mean**: 7.166
+  - **std**: 11.0402
+  - **min**: 1.0
+  - **median**: 3.0
+  - **max**: 355.0
+  - **skewness**: 5.0876
+  - **kurtosis**: 51.4789
+  - **n_outliers_iqr**: 47780
+  - **outlier_pct**: 9.26
+  - **iqr_fences**:
+    - -9.5
+    - 18.5
+- **Reviewer_Score**:
+  - **count**: 515738
+  - **mean**: 8.3951
+  - **std**: 1.6379
+  - **min**: 2.5
+  - **median**: 8.8
+  - **max**: 10.0
+  - **skewness**: -1.1934
+  - **kurtosis**: 0.9713
+  - **n_outliers_iqr**: 15907
+  - **outlier_pct**: 3.08
+  - **iqr_fences**:
+    - 4.35
+    - 12.75
+- **lat**:
+  - **count**: 512470
+  - **mean**: 49.4424
+  - **std**: 3.4663
+  - **min**: 41.3284
+  - **median**: 51.5
+  - **max**: 52.4002
+  - **skewness**: -1.4036
+  - **kurtosis**: 0.6544
+  - **n_outliers_iqr**: 59942
+  - **outlier_pct**: 11.7
+  - **iqr_fences**:
+    - 43.26
+    - 56.47
+- **lng**:
+  - **count**: 512470
+  - **mean**: 2.8238
+  - **std**: 4.5794
+  - **min**: -0.3698
+  - **median**: 0.0106
+  - **max**: 16.4292
+  - **skewness**: 1.8964
+  - **kurtosis**: 2.7791
+  - **n_outliers_iqr**: 36260
+  - **outlier_pct**: 7.08
+  - **iqr_fences**:
+    - -7.61
+    - 12.3
+
+## 7. Frequência & concentração
+- **reviews_per_hotel**:
+  - **min**: 8
+  - **median**: 194.0
+  - **mean**: 345.7
+  - **max**: 4789
+- **hotels_below_30_reviews**: 72
+- **hotels_below_50_reviews**: 158
+- **thin_hotel_examples**:
+  - **Hotel Gallitzinberg**: 8
+  - **Hotel Wagner**: 10
+  - **Mercure Paris Porte d Orleans**: 10
+  - **Boundary Rooms Suites**: 12
+  - **Ibis Styles Milano Palmanova**: 12
+  - **Le Lavoisier**: 12
+  - **Hotel Daniel Paris**: 12
+  - **Hotel Eitlj rg**: 12
+  - **MARQUIS Faubourg St Honor Relais Ch teaux**: 13
+  - **Renaissance Paris Republique Hotel Spa**: 13
+- **top10_hotels_review_share_pct**: 6.49
+- **reviews_per_year**:
+  - **2015**: 94527
+  - **2016**: 264403
+  - **2017**: 156808
+- **reviews_per_month_head**:
+  - **2015-08**: 19320
+  - **2015-09**: 19738
+  - **2015-10**: 19486
+  - **2015-11**: 18056
+  - **2015-12**: 17927
+  - **2016-01**: 19510
+- **reviews_by_city**:
+  - **London**: 262301
+  - **Barcelona**: 60149
+  - **Paris**: 59928
+  - **Amsterdam**: 57214
+  - **Vienna**: 38939
+  - **Milan**: 37207
+- **city_missing**: 0
+- **reviews_by_country**:
+  - **United Kingdom**: 262301
+  - **Spain**: 60149
+  - **France**: 59928
+  - **Netherlands**: 57214
+  - **Austria**: 38939
+  - **Italy**: 37207
+- **top_nationalities**:
+  - **United Kingdom**: 245246
+  - **United States of America**: 35437
+  - **Australia**: 21686
+  - **Ireland**: 14827
+  - **United Arab Emirates**: 10235
+  - **Saudi Arabia**: 8951
+  - **Netherlands**: 8772
+  - **Switzerland**: 8678
+  - **Germany**: 7941
+  - **Canada**: 7894
+- **distinct_nationalities**: 227
+
+## 8. Completude
+- **column_completeness_pct**:
+  - **Hotel_Address**: 100.0
+  - **Additional_Number_of_Scoring**: 100.0
+  - **Review_Date**: 100.0
+  - **Average_Score**: 100.0
+  - **Hotel_Name**: 100.0
+  - **Reviewer_Nationality**: 100.0
+  - **Negative_Review**: 100.0
+  - **Review_Total_Negative_Word_Counts**: 100.0
+  - **Total_Number_of_Reviews**: 100.0
+  - **Positive_Review**: 100.0
+  - **Review_Total_Positive_Word_Counts**: 100.0
+  - **Total_Number_of_Reviews_Reviewer_Has_Given**: 100.0
+  - **Reviewer_Score**: 100.0
+  - **Tags**: 100.0
+  - **days_since_review**: 100.0
+  - **lat**: 99.37
+  - **lng**: 99.37
+- **rows_missing_coordinates**: 3268
+- **hotels_missing_coordinates**: 17
+
+## 9. Integridade da target (Average_Score)
+- **unique_average_score_values**: 34
+- **n_hotels**: 1492
+- **hotels_with_varying_average_score**: 1
+- **is_hotel_level_constant**: False
+- **corr_avg_score_vs_mean_reviewer_score**: 0.9636
+- **average_score_value_range**:
+  - 5.2
+  - 9.8
+
+## Figuras geradas
+- `figures/01_numeric_histograms.png`
+- `figures/01_numeric_boxplots.png`
+- `figures/01_score_distributions.png`
+- `figures/01_frequency_analysis.png`

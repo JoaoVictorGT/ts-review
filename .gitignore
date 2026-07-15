@@ -1,1 +1,18 @@
 *.env
+
+# Raw / large data — never commit (Hotel_Reviews.csv is ~230MB, over GitHub's limit)
+data/*.csv
+!data/.gitkeep
+
+# Large generated artifacts (regenerate locally; keep the small smoke-test sample)
+outputs/reviews_enriched.parquet
+outputs/*.csv
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# OS / editor
+.DS_Store
+Thumbs.db

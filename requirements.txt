@@ -1,0 +1,21 @@
+# Core data stack
+pandas>=2.0
+numpy>=1.24
+scipy>=1.11
+
+# NLP (free, local models) — GPU strongly recommended for nlp_pipeline.py
+torch>=2.0
+transformers>=4.40
+sentencepiece>=0.1.99
+protobuf>=3.20
+tqdm>=4.65
+
+# I/O
+pyarrow>=14.0
+
+# Visualization
+matplotlib>=3.7
+seaborn>=0.13
+
+# Modeling (later phases)
+scikit-learn>=1.3
