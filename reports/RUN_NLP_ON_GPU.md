@@ -1,60 +1,69 @@
-# Como rodar o pipeline de NLP na máquina com GPU
+# How to run the NLP pipeline on a GPU machine
 
-Extrai sentimento geral (1–5 estrelas) e sentimento por aspecto (limpeza, staff,
-localização, conforto, comida, custo-benefício, ruído, facilidades) de todas as
-reviews, usando **modelos gratuitos e locais** (nenhum dado sai da máquina).
+Extracts overall sentiment (1–5 stars) and, per aspect (cleanliness, staff, location,
+comfort, food, value for money, noise, facilities), three columns — a 0–10 score, a
+closed-vocabulary sub-tag (e.g. `water_quality`, `wifi`, `rudeness` — comparable/countable
+across reviews and hotels), and a verbatim evidence excerpt — for every review, using
+**free, local models** (no data leaves the machine).
 
-## 1. Pré-requisitos
+> No local GPU? Use [`notebooks/nlp_pipeline_colab.ipynb`](../notebooks/nlp_pipeline_colab.ipynb)
+> instead — same pipeline, runs on Google Colab's free T4 GPU, no local setup required.
 
-- Python 3.10+ e uma GPU NVIDIA com CUDA.
-- Copiar o projeto para a máquina com GPU (com a pasta `data/Hotel_Reviews.csv`).
+## 1. Prerequisites
 
-## 2. Instalar dependências
+- Python 3.10+ and an NVIDIA GPU with CUDA.
+- Copy the project to the GPU machine (including `data/Hotel_Reviews.csv`).
+
+## 2. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-> Importante: instale a versão de **PyTorch com CUDA** compatível com a GPU
-> (veja https://pytorch.org). O `requirements.txt` pede `torch` genérico; numa
-> máquina com GPU, instale o wheel CUDA para usar a placa de verdade.
-> Verifique com: `python -c "import torch; print(torch.cuda.is_available())"` → deve dar `True`.
+> Important: install the **CUDA build of PyTorch** matching your GPU (see
+> https://pytorch.org). `requirements.txt` requests a generic `torch`; on a GPU
+> machine, install the CUDA wheel so it actually uses the card.
+> Verify with: `python -c "import torch; print(torch.cuda.is_available())"` → must print `True`.
 
-## 3. Teste de fumaça primeiro (obrigatório)
+## 3. Smoke test first (required)
 
-Rode numa amostra pequena para confirmar que a GPU está sendo usada e o download
-dos modelos (~1 GB no total, só na 1ª vez) funcionou:
+Run on a small sample to confirm the GPU is being used and the model download
+(~1GB total, first run only) worked:
 
 ```bash
 python src/nlp_pipeline.py --sample 500 --batch-size 64
 ```
 
-Deve logar `CUDA GPU detected: ...` e salvar `outputs/reviews_enriched_sample.parquet`.
+Should log `CUDA GPU detected: ...` and save `outputs/reviews_enriched_sample.parquet`.
 
-## 4. Rodada completa
+## 4. Full run
 
 ```bash
 python src/nlp_pipeline.py --batch-size 128
 ```
 
-- Ajuste `--batch-size` conforme a VRAM (128–256 para GPUs de 8–12 GB).
-- Tempo estimado: **~1–3 h** numa GPU tipo T4/RTX 3060 (515k reviews).
-- Saída: `outputs/reviews_enriched.parquet` — uma linha por review, com
-  `overall_stars` e uma coluna `aspect_<nome>` por aspecto
-  (`positive` / `negative` / `neutral` / `not_mentioned`).
+- Tune `--batch-size` to your VRAM (128–256 for 8–12GB GPUs).
+- Estimated time: **~1–3h** on a T4/RTX 3060-class GPU (515k reviews).
+- Output: `outputs/reviews_enriched.parquet` — one row per review, with
+  `overall_stars` plus three columns per aspect:
+  - `aspect_<name>_score` — 0–10 float (0 = most negative, 10 = most positive), empty when not mentioned
+  - `aspect_<name>_subtags` — `;`-joined closed-vocabulary tags, empty when not mentioned
+  - `aspect_<name>_evidence` — verbatim excerpt from the review, empty when not mentioned
 
-## 5. Devolver o resultado
+## 5. Hand back the result
 
-Traga de volta o arquivo `outputs/reviews_enriched.parquet`. A partir dele eu
-construo o painel hotel × trimestre e as features (fase seguinte, roda em CPU).
+Bring back `outputs/reviews_enriched.parquet`. From it, the next phase builds the
+hotel x quarter panel and its features (runs on CPU).
 
-## Notas técnicas
+## Technical notes
 
-- **Aspectos** são "abertos" por palavra-chave (`ASPECT_LEXICON` em
-  `src/nlp_pipeline.py`) antes de rodar o ABSA — assim o modelo só pontua o que
-  a review realmente menciona. Para adicionar um aspecto de negócio, basta
-  incluir uma entrada nesse dicionário.
-- Reviews e pares (texto, aspecto) são **deduplicados** antes da inferência.
-- Modelos usados (gratuitos):
-  - `nlptown/bert-base-multilingual-uncased-sentiment` (sentimento geral)
-  - `yangheng/deberta-v3-base-absa-v1.1` (sentimento por aspecto)
+- **Aspects** are gated by keyword before running ABSA (`ASPECT_LEXICON` in
+  `src/nlp_pipeline.py`), so the model only scores what the review actually
+  mentions. Each aspect has a nested set of closed-vocabulary sub-tags — add a
+  business-specific one by adding an entry to the relevant aspect's dict.
+- Keyword matching is **word-boundary safe** (regex `\bword\b`) — a short
+  keyword like `bar` never matches inside an unrelated word like `barefoot`.
+- Reviews and (text, aspect) pairs are **de-duplicated** before inference.
+- Models used (free):
+  - `nlptown/bert-base-multilingual-uncased-sentiment` (overall sentiment)
+  - `yangheng/deberta-v3-base-absa-v1.1` (aspect sentiment)
