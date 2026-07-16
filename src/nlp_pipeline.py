@@ -4,8 +4,10 @@ Run this on a machine with a CUDA GPU. It enriches every review with:
 
 * overall sentiment  -> nlptown/bert-base-multilingual-uncased-sentiment (1-5 stars),
   a model fine-tuned on product reviews;
-* aspect sentiment   -> yangheng/deberta-v3-base-absa-v1.1 (positive/negative/neutral),
-  a free aspect-based sentiment (ABSA) model.
+* aspect sentiment   -> yangheng/deberta-v3-base-absa-v1.1, remapped into a 0-10
+  score per aspect (0 = most negative, 10 = most positive, NaN = not mentioned),
+  plus a verbatim evidence snippet extracted from the review text itself (no
+  generation involved, so it cannot invent content).
 
 Both models are free and run fully locally (no API, no data leaves the machine).
 
@@ -33,14 +35,16 @@ Usage
 Output
 ------
 ``outputs/reviews_enriched.parquet`` — one row per review with identifiers,
-Reviewer_Score, overall stars, and one sentiment column per aspect. This feeds
-the hotel x quarter panel built later in ``feature_engineering.py``.
+Reviewer_Score, overall stars, and two columns per aspect (``aspect_<name>_score``,
+``aspect_<name>_evidence``). This feeds the hotel x quarter panel built later in
+``feature_engineering.py``.
 """
 
 from __future__ import annotations
 
 import argparse
 import logging
+import re
 from pathlib import Path
 
 import pandas as pd
@@ -66,26 +70,98 @@ OUTPUTS_DIR = PROJECT_ROOT / "outputs"
 OVERALL_MODEL = "nlptown/bert-base-multilingual-uncased-sentiment"
 ABSA_MODEL = "yangheng/deberta-v3-base-absa-v1.1"
 
-# Hotel-relevant aspects and the keywords that "unlock" ABSA scoring for them.
-# Keys become column names; extend freely with business-specific aspects.
-ASPECT_LEXICON: dict[str, tuple[str, ...]] = {
-    "cleanliness": ("clean", "dirty", "dust", "hygien", "spotless", "filthy",
-                    "stain", "smell", "tidy", "mould", "mold"),
-    "staff": ("staff", "reception", "service", "receptionist", "employee",
-              "rude", "friendly", "helpful", "polite", "welcoming", "manager"),
-    "location": ("location", "located", "central", "centre", "center", "near",
-                 "close", "walk", "metro", "station", "distance", "area"),
-    "comfort": ("comfortable", "comfy", "bed", "mattress", "pillow", "sleep",
-                "cozy", "cosy", "spacious", "room size"),
-    "food": ("breakfast", "food", "restaurant", "meal", "dinner", "coffee",
-             "buffet", "lunch", "bar", "drink"),
-    "value": ("price", "expensive", "cheap", "value", "worth", "cost",
-              "overpriced", "money", "affordable"),
-    "noise": ("noise", "noisy", "loud", "quiet", "soundproof", "silent"),
-    "facilities": ("wifi", "internet", "pool", "gym", "spa", "parking",
-                   "elevator", "lift", "air conditioning", "shower",
-                   "bathroom", "heating"),
+# Hotel-relevant aspects. Each aspect has a small set of closed-vocabulary
+# SUB-TAGS — this is what makes problems COMPARABLE and COUNTABLE across
+# reviews and hotels (e.g. "37 reviews this quarter tagged water_quality"),
+# unlike a free-text evidence snippet, which is unique to each review and
+# cannot be aggregated. Matching is WORD-BOUNDARY SAFE (see *_PATTERNS below):
+# a short keyword like "bar" only matches the standalone word, never a
+# substring inside an unrelated word like "barefoot".
+ASPECT_LEXICON: dict[str, dict[str, tuple[str, ...]]] = {
+    "cleanliness": {
+        "smell": ("smell", "smells", "smelly", "smelled", "odour", "odor",
+                  "stink", "stinky", "musty"),
+        "dirt_dust": ("dirty", "dirtier", "dust", "dusty", "stain", "stains",
+                      "stained", "filthy", "grime", "grimy"),
+        "mold": ("mould", "mouldy", "mold", "moldy"),
+        "hygiene": ("hygiene", "hygienic", "unhygienic"),
+        "housekeeping_general": ("clean", "cleaning", "cleaned", "cleaner",
+                                  "cleanliness", "tidy", "untidy", "spotless"),
+    },
+    "staff": {
+        "rudeness": ("rude", "unfriendly", "impolite"),
+        "helpfulness": ("helpful", "unhelpful", "welcoming", "friendly", "polite"),
+        "checkin_checkout": ("reception", "receptionist", "check in",
+                              "check out", "checkin", "checkout"),
+        "management": ("manager", "managers"),
+        "staff_general": ("staff", "employee", "employees", "service"),
+    },
+    "location": {
+        "distance_center": ("central", "centre", "center", "near", "nearby",
+                             "close", "distance", "walk", "walking"),
+        "transport_access": ("metro", "station", "bus stop", "tram"),
+        "surroundings": ("area", "neighbourhood", "neighborhood", "surroundings"),
+        "location_general": ("location", "located"),
+    },
+    "comfort": {
+        "bed_mattress": ("bed", "beds", "mattress", "pillow", "pillows"),
+        "room_size": ("spacious", "cramped", "room size"),
+        "sleep_quality": ("sleep", "sleeping", "comfortable", "uncomfortable",
+                           "cozy", "cosy", "comfy"),
+    },
+    "food": {
+        "breakfast": ("breakfast",),
+        "restaurant_service": ("restaurant", "meal", "meals", "dinner",
+                                "lunch", "buffet"),
+        "drinks_bar": ("bar", "bars", "drink", "drinks", "coffee"),
+        "food_general": ("food",),
+    },
+    "value": {
+        "price_too_high": ("expensive", "overpriced", "pricey"),
+        "hidden_fees": ("hidden fee", "hidden fees", "extra charge",
+                         "extra charges", "surcharge"),
+        "good_value": ("cheap", "affordable", "worth", "value for money"),
+        "value_general": ("price", "prices", "cost", "costs", "money", "value"),
+    },
+    "noise": {
+        "external_noise": ("street noise", "traffic noise", "outside noise"),
+        "internal_noise": ("thin walls", "neighbours", "neighbors", "noisy room"),
+        "noise_general": ("noise", "noisy", "loud", "quiet", "soundproof", "silent"),
+    },
+    "facilities": {
+        "wifi": ("wifi", "internet", "wi-fi"),
+        "water_quality": ("water pressure", "hot water", "cold water",
+                           "water quality", "no water", "water"),
+        "air_conditioning": ("air conditioning", "ac unit", "aircon"),
+        "pool_gym_spa": ("pool", "gym", "spa", "spas"),
+        "parking": ("parking",),
+        "elevator": ("elevator", "elevators", "lift", "lifts"),
+        "bathroom": ("shower", "showers", "bathroom", "bathrooms"),
+        "heating": ("heating",),
+    },
 }
+
+
+def _compile_pattern(keywords: tuple[str, ...]) -> "re.Pattern[str]":
+    """Word-boundary-safe regex for a list of keywords/phrases (see module docstring)."""
+    parts = [
+        re.escape(kw) if " " in kw else rf"\b{re.escape(kw)}\b"
+        for kw in keywords
+    ]
+    return re.compile("|".join(parts))
+
+
+# One pattern per sub-tag, and one merged pattern per aspect (union of its
+# sub-tags) reused for the aspect-level gate and the evidence snippet.
+SUBTAG_PATTERNS: dict[str, dict[str, "re.Pattern[str]"]] = {
+    aspect: {subtag: _compile_pattern(keywords) for subtag, keywords in subtags.items()}
+    for aspect, subtags in ASPECT_LEXICON.items()
+}
+ASPECT_PATTERNS: dict[str, "re.Pattern[str]"] = {
+    aspect: _compile_pattern(tuple(kw for keywords in subtags.values() for kw in keywords))
+    for aspect, subtags in ASPECT_LEXICON.items()
+}
+
 
 logging.basicConfig(
     level=logging.INFO,
@@ -142,16 +218,57 @@ def score_overall_sentiment(texts: pd.Series, batch_size: int) -> pd.Series:
 
 
 def detect_aspects(text_lower: str) -> list[str]:
-    """Return the aspects whose keywords appear in a lowercased review."""
-    return [
-        aspect
-        for aspect, keywords in ASPECT_LEXICON.items()
-        if any(kw in text_lower for kw in keywords)
-    ]
+    """Return the aspects whose (merged) keyword pattern matches in a lowercased review."""
+    return [aspect for aspect, pattern in ASPECT_PATTERNS.items() if pattern.search(text_lower)]
+
+
+def detect_subtags(aspect: str, text_lower: str) -> list[str]:
+    """Return the closed-vocabulary sub-tags of `aspect` matched in a lowercased review.
+
+    This is the countable/comparable signal — e.g. facilities -> ["water_quality"]
+    can be aggregated across every review and hotel, unlike a free-text evidence
+    snippet, which is unique per review.
+    """
+    return [subtag for subtag, pattern in SUBTAG_PATTERNS[aspect].items() if pattern.search(text_lower)]
+
+
+# Characters of context kept on each side of a keyword match in the evidence
+# snippet, and how many non-overlapping snippets to keep per aspect.
+EVIDENCE_CONTEXT_CHARS = 45
+EVIDENCE_MAX_SNIPPETS = 2
+
+
+def _extract_evidence(text: str, aspect: str) -> str:
+    """Return verbatim context snippet(s) around each aspect keyword hit.
+
+    Audit trail only — not the comparable signal; use detect_subtags for
+    anything that needs to be counted or aggregated.
+    """
+    pattern = ASPECT_PATTERNS[aspect]
+    lowered = text.lower()
+    snippets: list[str] = []
+    last_end = -1
+    for m in pattern.finditer(lowered):
+        if m.start() < last_end:
+            continue
+        lo = max(0, m.start() - EVIDENCE_CONTEXT_CHARS)
+        hi = min(len(text), m.end() + EVIDENCE_CONTEXT_CHARS)
+        snippets.append(text[lo:hi].strip())
+        last_end = hi
+        if len(snippets) >= EVIDENCE_MAX_SNIPPETS:
+            break
+    return " (...) ".join(snippets)
 
 
 def score_aspects(texts: pd.Series, batch_size: int) -> pd.DataFrame:
-    """Score each mentioned aspect per review; unmentioned -> 'not_mentioned'."""
+    """Per mentioned aspect: a 0-10 score, closed-vocabulary sub-tags (comparable
+    across reviews), and a verbatim evidence snippet (audit trail only).
+
+    Three columns per aspect — ``aspect_<name>_score`` (float, NaN when not
+    mentioned), ``aspect_<name>_subtags`` (";"-joined closed tags, "" when not
+    mentioned), ``aspect_<name>_evidence`` (verbatim excerpt, "" when not
+    mentioned).
+    """
     logger.info("Aspect sentiment: loading %s", ABSA_MODEL)
     absa = pipeline("text-classification", model=ABSA_MODEL, device=_device())
 
@@ -168,17 +285,33 @@ def score_aspects(texts: pd.Series, batch_size: int) -> pd.DataFrame:
 
     inputs = [{"text": t, "text_pair": a} for t, a in job_list]
     preds = _classify_batched(absa, inputs, batch_size, "aspects")
-    cache = {job: p["label"].lower() for job, p in zip(job_list, preds)}
 
-    # Assemble one column per aspect.
+    score_cache: dict[tuple[str, str], float] = {}
+    subtag_cache: dict[tuple[str, str], str] = {}
+    evidence_cache: dict[tuple[str, str], str] = {}
+    for (text, aspect), pred in zip(job_list, preds):
+        score_cache[(text, aspect)] = _score_from_label(pred["label"], pred["score"])
+        subtag_cache[(text, aspect)] = ";".join(detect_subtags(aspect, text.lower()))
+        evidence_cache[(text, aspect)] = _extract_evidence(text, aspect)
+
+    # Assemble three columns per aspect.
     result = pd.DataFrame(index=texts.index)
     for aspect in ASPECT_LEXICON:
-        result[f"aspect_{aspect}"] = [
-            cache.get((text, aspect), "not_mentioned") if aspect in aspects else "not_mentioned"
+        result[f"aspect_{aspect}_score"] = [
+            score_cache.get((text, aspect)) if aspect in aspects else None
+            for text, aspects in zip(texts, mentioned)
+        ]
+        result[f"aspect_{aspect}_subtags"] = [
+            subtag_cache.get((text, aspect), "") if aspect in aspects else ""
+            for text, aspects in zip(texts, mentioned)
+        ]
+        result[f"aspect_{aspect}_evidence"] = [
+            evidence_cache.get((text, aspect), "") if aspect in aspects else ""
             for text, aspects in zip(texts, mentioned)
         ]
     result["n_aspects_mentioned"] = mentioned.map(len).values
     return result
+
 
 
 # --------------------------------------------------------------------------- #
