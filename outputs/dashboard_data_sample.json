@@ -220,7 +220,7 @@
     "Comfort": [
       {
         "sentiment": "positive",
-        "text": "The room is spacious and bright The hotel is located in a quiet a (...) e our sheet and duvet everyday but just made bed They also didn\\'t clean the floor and change",
+        "text": "The room is spacious and bright The hotel is located in a quiet a (...) e our sheet and duvet everyday but just made bed They also didn't clean the floor and change",
         "nationality": "United Kingdom",
         "date": "7/17/2017"
       },
@@ -276,7 +276,7 @@
       },
       {
         "sentiment": "positive",
-        "text": "ies weren\\'t updated daily And the floor was dusty and had hair on it and that was upon our arr",
+        "text": "ies weren't updated daily And the floor was dusty and had hair on it and that was upon our arr",
         "nationality": "Australia",
         "date": "6/20/2017"
       },
@@ -306,7 +306,7 @@
       },
       {
         "sentiment": "negative",
-        "text": "l is located in a quiet and beautiful park . Cleaner did not change our sheet and duvet everyday (...) everyday but just made bed They also didn\\'t clean the floor and changed the body gel when we r",
+        "text": "l is located in a quiet and beautiful park . Cleaner did not change our sheet and duvet everyday (...) everyday but just made bed They also didn't clean the floor and changed the body gel when we r",
         "nationality": "United Kingdom",
         "date": "7/17/2017"
       },
@@ -332,7 +332,7 @@
       },
       {
         "sentiment": "positive",
-        "text": "able room I\\'ll come back for sure there The staff very gentle one Spanish man really really go",
+        "text": "able room I'll come back for sure there The staff very gentle one Spanish man really really go",
         "nationality": "Italy",
         "date": "7/3/2017"
       },
@@ -432,7 +432,10 @@
     {
       "competitor": "K K Hotel George",
       "category": "Food",
-      "review": "No coffee or tea in the room or lobby No one to help w"
+      "review": "No coffee or tea in the room or lobby No one to help w",
+      "highlights": [
+        "coffee"
+      ]
     }
   ],
   "dropped_aspect_coverage": [

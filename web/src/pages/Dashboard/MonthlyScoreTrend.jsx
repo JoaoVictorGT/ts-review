@@ -10,7 +10,7 @@ import {
   Legend,
   Filler,
 } from "chart.js"
-import { CATEGORIES, CATEGORY_COLORS, MONTHLY_LABELS, MONTHLY_OVERALL, MONTHLY_BY_CATEGORY } from "../../data/mockData"
+import { CATEGORIES, CATEGORY_COLORS, QUARTERLY_LABELS, QUARTERLY_OVERALL, QUARTERLY_BY_CATEGORY } from "../../data/mockData"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, Filler)
 
@@ -35,7 +35,7 @@ export default function MonthlyScoreTrend() {
       ? [
           {
             label: "Overall Score",
-            data: MONTHLY_OVERALL,
+            data: QUARTERLY_OVERALL,
             borderColor: "#2563eb",
             backgroundColor: "rgba(37,99,235,0.08)",
             fill: true,
@@ -46,7 +46,7 @@ export default function MonthlyScoreTrend() {
         ]
       : CATEGORIES.filter((c) => activeDimensions.has(c.name)).map((c) => ({
           label: c.name,
-          data: MONTHLY_BY_CATEGORY[c.name],
+          data: QUARTERLY_BY_CATEGORY[c.name],
           borderColor: CATEGORY_COLORS[c.name],
           backgroundColor: "transparent",
           tension: 0.35,
@@ -74,7 +74,7 @@ export default function MonthlyScoreTrend() {
   return (
     <>
       <div className="flex items-center justify-between mb-3 flex-wrap gap-3">
-        <p className="text-xs font-semibold text-slate-400 tracking-wider uppercase">Monthly score trend</p>
+        <p className="text-xs font-semibold text-slate-400 tracking-wider uppercase">Quarterly score trend</p>
         <div className="flex items-center gap-1 bg-slate-100 rounded-lg p-1">
           <button type="button" onClick={() => setView("overall")} className={view === "overall" ? TOGGLE_ACTIVE : TOGGLE_INACTIVE}>
             Overall
@@ -108,7 +108,7 @@ export default function MonthlyScoreTrend() {
           </div>
         )}
         <div style={{ height: "260px" }}>
-          <Line data={{ labels: MONTHLY_LABELS, datasets }} options={options} />
+          <Line data={{ labels: QUARTERLY_LABELS, datasets }} options={options} />
         </div>
       </div>
     </>
