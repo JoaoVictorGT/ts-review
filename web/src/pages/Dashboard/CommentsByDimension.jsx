@@ -1,12 +1,12 @@
-import { DIMENSION_COMMENTS } from "../../data/mockData"
-
-// Worst (highest % negative) first, so the categories needing the most
-// attention surface at the top of the widget.
-const SORTED_BY_WORST = [...DIMENSION_COMMENTS].sort(
-  (a, b) => b.negative / b.total - a.negative / a.total,
-)
+import { useDashboardData } from "../../hooks/useDashboardData"
 
 export default function CommentsByDimension() {
+  const { data } = useDashboardData()
+  // Worst (highest % negative) first, so the categories needing the most
+  // attention surface at the top of the widget.
+  const SORTED_BY_WORST = [...data.DIMENSION_COMMENTS].sort(
+    (a, b) => b.negative / b.total - a.negative / a.total,
+  )
   return (
     <>
       <p className="text-xs font-semibold text-slate-400 tracking-wider uppercase mb-3">Guest comments by dimension</p>

@@ -1,7 +1,9 @@
 *.env
+.env.local
+.env.*.local
 
-# Raw / large data — never commit (Hotel_Reviews.csv is ~230MB, over GitHub's limit)
-data/*.csv
+# Raw / large data — never commit (these CSVs are 200MB+, over GitHub's limit)
+data/**/*.csv
 !data/.gitkeep
 
 # Large generated artifacts (regenerate locally; keep the small smoke-test sample)
@@ -12,6 +14,7 @@ outputs/*.csv
 __pycache__/
 *.pyc
 *.pyo
+*.log
 
 # OS / editor
 .DS_Store

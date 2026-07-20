@@ -1,23 +1,22 @@
-// Canned, keyword-matched replies grounded in the same mock data the rest of
-// the dashboard uses — no real LLM/backend yet, but the numbers it quotes are
-// real (well, real-mock) and consistent with what's shown elsewhere. Swap
-// this for an actual API call once the backend exists; the chat UI itself
-// won't need to change.
-
-import { CATEGORIES, HOTEL_ARENA_SCORES, REGIONAL_STANDING, WORST_CATEGORY, BEST_CATEGORY } from "../../data/mockData"
+// Canned, keyword-matched replies grounded in the real dashboard data fetched
+// from the backend — no real LLM yet, but the numbers it quotes are real and
+// consistent with what's shown elsewhere. `data` is the same object returned
+// by useDashboardData(), passed in by the caller since this is a plain module
+// (not a component, can't use hooks itself).
 
 const GREETING =
   "Hi! I'm your TrueStay analyst. Ask me about any category (food, comfort, cleanliness, staff, location), how you compare to the region, or what's driving your score."
 
-function findMentionedCategory(text) {
+function findMentionedCategory(text, categories) {
   const lower = text.toLowerCase()
-  return CATEGORIES.find((c) => lower.includes(c.name.toLowerCase()))
+  return categories.find((c) => lower.includes(c.name.toLowerCase()))
 }
 
-export function getAgentReply(userText) {
+export function getAgentReply(userText, data) {
+  const { CATEGORIES, HOTEL_ARENA_SCORES, REGIONAL_STANDING, WORST_CATEGORY, BEST_CATEGORY } = data
   const lower = userText.toLowerCase()
 
-  const category = findMentionedCategory(userText)
+  const category = findMentionedCategory(userText, CATEGORIES)
   if (category) {
     const score = HOTEL_ARENA_SCORES[category.name]
     return `${category.name} is currently at ${score.toFixed(1)}/10. ${category.insight}`

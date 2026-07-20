@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { HOTELS } from "../../data/mockData"
+import { HOTELS } from "../../data/staticDisplayData"
 import HotelDot from "./HotelDot"
 import HotelDrawer from "./HotelDrawer"
 

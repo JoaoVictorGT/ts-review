@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from "react"
 import { Send, Sparkles } from "lucide-react"
 import { getAgentReply, createInitialMessage } from "./agentReplies"
+import { useDashboardData } from "../../hooks/useDashboardData"
 
 export default function Chat() {
+  const { data, loading, error } = useDashboardData()
   const [messages, setMessages] = useState(() => [createInitialMessage()])
   const [input, setInput] = useState("")
   const bottomRef = useRef(null)
@@ -14,19 +16,32 @@ export default function Chat() {
   function handleSend(event) {
     event.preventDefault()
     const text = input.trim()
-    if (!text) return
+    if (!text || !data) return
 
     const userMessage = { id: crypto.randomUUID(), role: "user", text }
-    const agentMessage = { id: crypto.randomUUID(), role: "agent", text: getAgentReply(text) }
+    const agentMessage = { id: crypto.randomUUID(), role: "agent", text: getAgentReply(text, data) }
     setMessages((prev) => [...prev, userMessage, agentMessage])
     setInput("")
   }
+
+  if (loading) {
+    return <div className="max-w-3xl mx-auto px-6 py-16 text-slate-400">Connecting to your analyst…</div>
+  }
+  if (error) {
+    return (
+      <div className="max-w-3xl mx-auto px-6 py-16 text-red-500">
+        Couldn't load your hotel data: {error.message}
+      </div>
+    )
+  }
+
+  const hotelName = data.REGIONAL_STANDING.you.name.replace(" (You)", "")
 
   return (
     <div className="max-w-3xl mx-auto px-6 py-10 flex flex-col" style={{ height: "calc(100vh - 64px)" }}>
       <div className="mb-6">
         <h1 className="text-2xl font-semibold text-slate-900">Talk to your TrueStay analyst</h1>
-        <p className="text-slate-500 mt-1">Ask plain-language questions about how Hotel Arena is performing.</p>
+        <p className="text-slate-500 mt-1">Ask plain-language questions about how {hotelName} is performing.</p>
       </div>
 
       <div className="flex-1 overflow-y-auto space-y-4 pr-1">

@@ -13,6 +13,10 @@ tqdm>=4.65
 # I/O
 pyarrow>=14.0
 
+# Database (dashboard_data_prep.py -> Neon Postgres)
+psycopg2-binary>=2.9
+python-dotenv>=1.0
+
 # Visualization
 matplotlib>=3.7
 seaborn>=0.13

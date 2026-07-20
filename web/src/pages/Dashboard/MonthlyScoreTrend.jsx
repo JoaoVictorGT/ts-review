@@ -10,7 +10,8 @@ import {
   Legend,
   Filler,
 } from "chart.js"
-import { CATEGORIES, CATEGORY_COLORS, QUARTERLY_LABELS, QUARTERLY_OVERALL, QUARTERLY_BY_CATEGORY } from "../../data/mockData"
+import { CATEGORY_COLORS } from "../../data/staticDisplayData"
+import { useDashboardData } from "../../hooks/useDashboardData"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend, Filler)
 
@@ -18,6 +19,8 @@ const TOGGLE_ACTIVE = "text-xs font-medium rounded-lg px-3 py-1.5 bg-slate-900 t
 const TOGGLE_INACTIVE = "text-xs font-medium rounded-lg px-3 py-1.5 text-slate-500 hover:bg-slate-200 transition-colors"
 
 export default function MonthlyScoreTrend() {
+  const { data } = useDashboardData()
+  const { CATEGORIES, QUARTERLY_LABELS, QUARTERLY_OVERALL, QUARTERLY_BY_CATEGORY } = data
   const [view, setView] = useState("overall")
   const [activeDimensions, setActiveDimensions] = useState(new Set(CATEGORIES.map((c) => c.name)))
 

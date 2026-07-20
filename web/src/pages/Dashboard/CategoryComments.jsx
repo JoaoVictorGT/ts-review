@@ -1,8 +1,10 @@
 import { useState } from "react"
 import { ThumbsUp, ThumbsDown } from "lucide-react"
-import { CATEGORIES, CATEGORY_COMMENTS } from "../../data/mockData"
+import { useDashboardData } from "../../hooks/useDashboardData"
 
 export default function CategoryComments() {
+  const { data } = useDashboardData()
+  const { CATEGORIES, CATEGORY_COMMENTS } = data
   const [activeCategory, setActiveCategory] = useState("Food")
   const comments = CATEGORY_COMMENTS[activeCategory] ?? []
 

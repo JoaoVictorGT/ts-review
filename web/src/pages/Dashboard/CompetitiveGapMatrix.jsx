@@ -1,7 +1,9 @@
 import { SlidersHorizontal } from "lucide-react"
-import { CATEGORIES, HOTEL_ARENA_SCORES, COMPETITORS } from "../../data/mockData"
+import { useDashboardData } from "../../hooks/useDashboardData"
 
 export default function CompetitiveGapMatrix({ activeFilter, selectedCompetitorId, onSelectCompetitor }) {
+  const { data } = useDashboardData()
+  const { CATEGORIES, HOTEL_ARENA_SCORES, COMPETITORS } = data
   const competitor = COMPETITORS.find((c) => c.id === selectedCompetitorId)
   const gaps = CATEGORIES.map((c) => ({
     name: c.name,
