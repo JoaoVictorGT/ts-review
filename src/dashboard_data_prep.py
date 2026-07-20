@@ -31,9 +31,14 @@ file, no changes needed — it only depends on pandas).
 from __future__ import annotations
 
 import json
+import sys
+from collections import Counter
 from pathlib import Path
 
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from nlp_pipeline import ASPECT_LEXICON  # noqa: E402  (same-folder import, see sys.path above)
 
 # --------------------------------------------------------------------------- #
 # Configuration
@@ -42,6 +47,35 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 INPUT_PATH = PROJECT_ROOT / "outputs" / "reviews_enriched_sample.parquet"
 OUTPUT_PATH = PROJECT_ROOT / "outputs" / "dashboard_data_sample.json"
+MOCKDATA_JS_PATH = PROJECT_ROOT / "web" / "src" / "data" / "mockData.js"
+
+# snake_case sub-tag -> readable phrase, for auto-generated insight text.
+# Anything missing here falls back to a plain "_" -> " " replace.
+SUBTAG_DISPLAY = {
+    "dirt_dust": "dirt & dust",
+    "housekeeping_general": "housekeeping",
+    "checkin_checkout": "check-in/check-out",
+    "staff_general": "staff",
+    "location_general": "location",
+    "distance_center": "distance to the center",
+    "transport_access": "transport access",
+    "restaurant_service": "restaurant service",
+    "drinks_bar": "the bar",
+    "food_general": "food",
+    "price_too_high": "high prices",
+    "hidden_fees": "hidden fees",
+    "good_value": "value for money",
+    "value_general": "pricing",
+    "external_noise": "outside noise",
+    "internal_noise": "noise from neighbors",
+    "noise_general": "noise",
+    "water_quality": "water quality",
+    "air_conditioning": "air conditioning",
+    "pool_gym_spa": "the pool/gym/spa",
+    "bed_mattress": "the bed/mattress",
+    "room_size": "room size",
+    "sleep_quality": "sleep quality",
+}
 
 # All 8 aspects our NLP pipeline scores. The website today only surfaces 5
 # (see the module docstring) — WEBSITE_ASPECTS below is that subset.
@@ -195,6 +229,32 @@ def competitor_gaps(scores_by_hotel: pd.DataFrame, focus_hotel: str) -> pd.DataF
     return pd.DataFrame(rows)
 
 
+def find_highlights(evidence_text: str, aspect: str, max_highlights: int = 2) -> list[str]:
+    """Which of the aspect's own keywords actually appear in this evidence text.
+
+    Reuses the exact keyword lexicon nlp_pipeline.py already gates aspects on —
+    the highlighted phrase is always a literal substring of the real review,
+    the same guarantee _extract_evidence relies on. Longer phrases are checked
+    first so e.g. "water pressure" wins over a bare "water" if both are present.
+    """
+    all_keywords = sorted(
+        {kw for keywords in ASPECT_LEXICON[aspect].values() for kw in keywords},
+        key=len,
+        reverse=True,
+    )
+    lowered = evidence_text.lower()
+    found: list[str] = []
+    for kw in all_keywords:
+        if kw in lowered:
+            idx = lowered.find(kw)
+            match = evidence_text[idx : idx + len(kw)]
+            if match not in found:
+                found.append(match)
+        if len(found) >= max_highlights:
+            break
+    return found
+
+
 def vulnerability_table(df: pd.DataFrame, scores_by_hotel: pd.DataFrame, focus_hotel: str) -> list[dict]:
     """For each competitor, their single weakest aspect + one real negative excerpt."""
     entries = []
@@ -208,11 +268,13 @@ def vulnerability_table(df: pd.DataFrame, scores_by_hotel: pd.DataFrame, focus_h
         negative = comp_df[(comp_df[score_col] < NEGATIVE_THRESHOLD) & (comp_df[evidence_col] != "")]
         if negative.empty:
             continue
+        review_text = negative.iloc[0][evidence_col]
         entries.append(
             {
                 "competitor": comp["Hotel_Name"],
                 "category": title(weakest),
-                "review": negative.iloc[0][evidence_col],
+                "review": review_text,
+                "highlights": find_highlights(review_text, weakest),
             }
         )
     return entries
@@ -234,13 +296,224 @@ def dropped_aspect_coverage(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # --------------------------------------------------------------------------- #
+# 8. Website-shaped bundle — matches web/src/data/mockData.js's exports
+#    exactly, so it can be dropped in with no component code changes
+#    (except MONTHLY_* -> QUARTERLY_*, since quarter is the real granularity).
+# --------------------------------------------------------------------------- #
+
+
+def auto_insight(df: pd.DataFrame, hotel_name: str, aspect: str) -> str:
+    """One sentence: the single most common complaint sub-tag for this aspect.
+
+    Deterministic — picks from real (sub-tag, count) pairs, never phrased by a
+    model — so it can never say something the data doesn't back up.
+    """
+    hotel_df = df[df["Hotel_Name"] == hotel_name]
+    score_col, subtag_col = f"aspect_{aspect}_score", f"aspect_{aspect}_subtags"
+    negative = hotel_df[hotel_df[score_col] < NEGATIVE_THRESHOLD]
+
+    counts: Counter[str] = Counter()
+    for tags in negative[subtag_col]:
+        counts.update(t for t in str(tags).split(";") if t)
+
+    if not counts:
+        return f"No major {title(aspect).lower()} complaints in this sample."
+
+    # Prefer a specific sub-tag over the "*_general" catch-all — "check-in/
+    # check-out" is an actionable insight, "staff" (from staff_general) just
+    # restates the category name.
+    specific = {tag: n for tag, n in counts.items() if not tag.endswith("_general")}
+    top_subtag, count = Counter(specific or counts).most_common(1)[0]
+    display = SUBTAG_DISPLAY.get(top_subtag, top_subtag.replace("_", " "))
+    plural = "review" if count == 1 else "reviews"
+    return f"Most negative mentions are about {display} ({count} {plural})."
+
+
+def build_website_data(df: pd.DataFrame, focus_hotel: str) -> dict:
+    """Assemble every export mockData.js needs, in its exact shape."""
+    scores = category_scores_by_hotel(df)
+    board = leaderboard(df)
+    trend = quarterly_trend(df, focus_hotel)
+
+    categories = [
+        {
+            "name": title(a),
+            "icon": {"food": "utensils", "comfort": "bed", "cleanliness": "sparkles",
+                      "staff": "users", "location": "map-pin"}[a],
+            "insight": auto_insight(df, focus_hotel, a),
+        }
+        for a in WEBSITE_ASPECTS
+    ]
+
+    focus_row = scores[scores["Hotel_Name"] == focus_hotel].iloc[0]
+    hotel_arena_scores = {title(a): focus_row[f"{a}_score"] for a in WEBSITE_ASPECTS}
+
+    competitors = [
+        {
+            "id": comp["Hotel_Name"].lower().replace(" ", "_"),
+            "name": comp["Hotel_Name"],
+            "scores": {title(a): comp[f"{a}_score"] for a in WEBSITE_ASPECTS},
+        }
+        for _, comp in scores[scores["Hotel_Name"] != focus_hotel].iterrows()
+    ]
+
+    focus_quarterly = (
+        df[df["Hotel_Name"] == focus_hotel].groupby("quarter")["Reviewer_Score"].mean().sort_index()
+    )
+    hotel_trend = None
+    if len(focus_quarterly) >= 2:
+        hotel_trend = "up" if focus_quarterly.iloc[-1] >= focus_quarterly.iloc[0] else "down"
+
+    leaderboard_rows = []
+    for _, r in board.iterrows():
+        is_focus = r["Hotel_Name"] == focus_hotel
+        row = {
+            "rank": int(r["rank"]),
+            "name": f"{r['Hotel_Name']} (You)" if is_focus else r["Hotel_Name"],
+            "score": r["overall_score"],
+        }
+        if is_focus:
+            row["isUser"] = True
+            if hotel_trend:
+                row["trend"] = hotel_trend
+        leaderboard_rows.append(row)
+
+    return {
+        "CATEGORIES": categories,
+        "HOTEL_ARENA_SCORES": hotel_arena_scores,
+        "COMPETITORS": competitors,
+        "LEADERBOARD": leaderboard_rows,
+        "VULNERABILITIES": vulnerability_table(df, scores, focus_hotel),
+        "QUARTERLY_LABELS": trend["quarter"].tolist(),
+        "QUARTERLY_OVERALL": trend["overall"].tolist(),
+        "QUARTERLY_BY_CATEGORY": {title(a): trend[a].tolist() for a in WEBSITE_ASPECTS},
+        "DIMENSION_COMMENTS": dimension_comments(df, focus_hotel).to_dict(orient="records"),
+        "CATEGORY_COMMENTS": category_comments(df, focus_hotel),
+    }
+
+
+def write_mockdata_js(website_data: dict, focus_hotel: str, path: Path) -> None:
+    """Render web/src/data/mockData.js — same export names as before, real content.
+
+    CATEGORY_COLORS, HOTELS, and QUADRANT_STYLES are NOT regenerated: the
+    Quadrant page has no real data source (no price column anywhere in the
+    dataset) and stays mocked on purpose — see the header comment below.
+    """
+    j = lambda obj: json.dumps(obj, indent=2, ensure_ascii=False)  # noqa: E731
+
+    js = f"""\
+// Data for the TrueStay dashboard — generated by src/dashboard_data_prep.py
+// from real NLP-enriched reviews ({focus_hotel} + competitors), NOT hand-mocked.
+// Re-run that script to refresh these numbers from a newer dataset; don't
+// hand-edit the generated sections below.
+//
+// CATEGORY_COLORS, HOTELS, and QUADRANT_STYLES are still mocked on purpose —
+// the Quadrant page (price vs. audited quality) has no real data source; this
+// dataset has no price/rate column at all.
+
+export const CATEGORIES = {j(website_data["CATEGORIES"])}
+
+export const CATEGORY_COLORS = {{
+  Food: "#f97316",
+  Comfort: "#ef4444",
+  Cleanliness: "#06b6d4",
+  Staff: "#8b5cf6",
+  Location: "#22c55e",
+}}
+
+export const HOTEL_ARENA_SCORES = {j(website_data["HOTEL_ARENA_SCORES"])}
+
+export const COMPETITORS = {j(website_data["COMPETITORS"])}
+
+export const LEADERBOARD = {j(website_data["LEADERBOARD"])}
+
+// Derived once, from LEADERBOARD, so every component that needs "how do we
+// compare to the region" (Dashboard insight card, Regional Position card,
+// the chat agent) reads the same numbers instead of recomputing them.
+const _you = LEADERBOARD.find((h) => h.isUser)
+const _total = LEADERBOARD.length
+const _average = LEADERBOARD.reduce((sum, h) => sum + h.score, 0) / _total
+
+export const REGIONAL_STANDING = {{
+  you: _you,
+  total: _total,
+  average: _average,
+  delta: _you.score - _average,
+  percentBetterThan: Math.round(((_total - _you.rank) / _total) * 100),
+}}
+
+// Derived once, from HOTEL_ARENA_SCORES, so the weakest/strongest category
+// (and its existing `insight` copy) can be reused anywhere without
+// re-deriving the min/max each time.
+export const WORST_CATEGORY = CATEGORIES.reduce((worst, c) =>
+  HOTEL_ARENA_SCORES[c.name] < HOTEL_ARENA_SCORES[worst.name] ? c : worst,
+)
+export const BEST_CATEGORY = CATEGORIES.reduce((best, c) =>
+  HOTEL_ARENA_SCORES[c.name] > HOTEL_ARENA_SCORES[best.name] ? c : best,
+)
+
+export const VULNERABILITIES = {j(website_data["VULNERABILITIES"])}
+
+// The real dataset only supports QUARTERLY granularity (matches the hotel x
+// quarter panel decided for the project) — these used to be mislabeled
+// "MONTHLY_*" back when this was hand-mocked with 12 fake months.
+export const QUARTERLY_LABELS = {j(website_data["QUARTERLY_LABELS"])}
+export const QUARTERLY_OVERALL = {j(website_data["QUARTERLY_OVERALL"])}
+export const QUARTERLY_BY_CATEGORY = {j(website_data["QUARTERLY_BY_CATEGORY"])}
+
+export const DIMENSION_COMMENTS = {j(website_data["DIMENSION_COMMENTS"])}
+
+export const CATEGORY_COMMENTS = {j(website_data["CATEGORY_COMMENTS"])}
+
+// Quadrant page (2x2 price vs. audited-quality scatter) — still 100% mocked,
+// see the module header. Also uses a different 0-5 scale and metric set
+// (food/service/comfort/cleaner) than the Dashboard's 0-10 scale, inherited
+// from the original mockup.
+export const HOTELS = [
+  {{ id: 1, name: "Grand Azure Palace", quadrant: "premium", x: 82, y: 18, price: 620, food: 4.7, service: 4.9, comfort: 4.8, cleaner: 4.9 }},
+  {{ id: 2, name: "Hotel Meridian Bay", quadrant: "premium", x: 74, y: 24, price: 540, food: 4.5, service: 4.6, comfort: 4.7, cleaner: 4.8 }},
+  {{ id: 3, name: "The Ivory Court", quadrant: "value", x: 78, y: 74, price: 210, food: 4.4, service: 4.6, comfort: 4.3, cleaner: 4.7 }},
+  {{ id: 4, name: "Cedar & Stone Inn", quadrant: "value", x: 70, y: 68, price: 180, food: 4.2, service: 4.5, comfort: 4.2, cleaner: 4.4 }},
+  {{ id: 5, name: "Downtown Basic Suites", quadrant: "basic", x: 28, y: 78, price: 95, food: 3.1, service: 3.2, comfort: 3.0, cleaner: 3.4 }},
+  {{ id: 6, name: "Traveler's Lodge", quadrant: "basic", x: 22, y: 84, price: 80, food: 2.9, service: 3.0, comfort: 3.1, cleaner: 3.2 }},
+  {{ id: 7, name: "Regal Overlook Hotel", quadrant: "overpriced", x: 26, y: 20, price: 480, food: 2.8, service: 3.0, comfort: 3.2, cleaner: 2.9 }},
+  {{ id: 8, name: "Marbella Grand", quadrant: "overpriced", x: 34, y: 28, price: 410, food: 3.1, service: 2.9, comfort: 3.0, cleaner: 3.1 }},
+]
+
+export const QUADRANT_STYLES = {{
+  premium: {{ label: "Premium / Luxury", badge: "bg-emerald-50 text-emerald-700 border border-emerald-200", dot: "bg-emerald-500" }},
+  value: {{ label: "Value for Money", badge: "bg-sky-50 text-sky-700 border border-sky-200", dot: "bg-sky-500" }},
+  basic: {{ label: "Basic Economy", badge: "bg-slate-50 text-slate-600 border border-slate-200", dot: "bg-slate-400" }},
+  overpriced: {{ label: "Overpriced", badge: "bg-amber-50 text-amber-700 border border-amber-200", dot: "bg-amber-500" }},
+}}
+"""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(js, encoding="utf-8")
+
+
+# --------------------------------------------------------------------------- #
 # Orchestration
 # --------------------------------------------------------------------------- #
+
+
+def sanitize_evidence_columns(df: pd.DataFrame) -> pd.DataFrame:
+    """Strip a stray backslash the Colab notebook used to insert before
+    repaired contractions ("didn\\'t" instead of "didn't") — a bug in its
+    CONTRACTION_FIXES dict, now fixed at the source. Datasets generated before
+    that fix still carry the corrupted text, so clean it here rather than
+    requiring a full Colab re-run. Harmless no-op on already-clean data.
+    """
+    for aspect in ASPECTS:
+        col = f"aspect_{aspect}_evidence"
+        if col in df.columns:
+            df[col] = df[col].str.replace("\\'", "'", regex=False)
+    return df
 
 
 def main() -> None:
     print(f"Loading {INPUT_PATH} ...")
     df = pd.read_parquet(INPUT_PATH)
+    df = sanitize_evidence_columns(df)
     print(f"{len(df)} reviews, {df['Hotel_Name'].nunique()} hotels: "
           f"{df['Hotel_Name'].value_counts().to_dict()}")
 
@@ -295,6 +568,13 @@ def main() -> None:
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_PATH.write_text(json.dumps(dashboard_data, indent=2, default=str), encoding="utf-8")
     print(f"\nSaved combined result -> {OUTPUT_PATH}")
+
+    print("\n=== 8. Website data bundle ===")
+    website_data = build_website_data(df, focus_hotel)
+    for aspect, cat in zip(WEBSITE_ASPECTS, website_data["CATEGORIES"]):
+        print(f"  {cat['name']}: {cat['insight']}")
+    write_mockdata_js(website_data, focus_hotel, MOCKDATA_JS_PATH)
+    print(f"\nWrote real data -> {MOCKDATA_JS_PATH}")
 
 
 if __name__ == "__main__":

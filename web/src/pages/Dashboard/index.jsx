@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Filter, X } from "lucide-react"
-import { REGIONAL_STANDING } from "../../data/mockData"
+import { REGIONAL_STANDING, COMPETITORS } from "../../data/mockData"
 import InsightCard from "./InsightCard"
 import CategoryHealthCards from "./CategoryHealthCards"
 import CompetitiveGapMatrix from "./CompetitiveGapMatrix"
@@ -13,7 +13,7 @@ import VulnerabilityTable from "./VulnerabilityTable"
 
 export default function Dashboard() {
   const [activeFilter, setActiveFilter] = useState(null)
-  const [selectedCompetitorId, setSelectedCompetitorId] = useState("plaza")
+  const [selectedCompetitorId, setSelectedCompetitorId] = useState(COMPETITORS[0]?.id)
 
   function toggleFilter(name) {
     setActiveFilter((prev) => (prev === name ? null : name))
