@@ -32,6 +32,7 @@ file, no changes needed — it only depends on pandas).
 from __future__ import annotations
 
 import json
+import math
 import os
 import sys
 from collections import Counter
@@ -351,10 +352,22 @@ def auto_insight(df: pd.DataFrame, hotel_name: str, aspect: str) -> str:
     return f"Most negative mentions are about {display} ({count} {plural})."
 
 
-def build_website_data(df: pd.DataFrame, focus_hotel: str) -> dict:
-    """Assemble every export mockData.js needs, in its exact shape."""
-    scores = category_scores_by_hotel(df)
-    board = leaderboard(df)
+def build_website_data(
+    df: pd.DataFrame,
+    focus_hotel: str,
+    scores: pd.DataFrame | None = None,
+    board: pd.DataFrame | None = None,
+) -> dict:
+    """Assemble every export mockData.js needs, in its exact shape.
+
+    `scores`/`board` can be precomputed once and passed in when calling this
+    per-hotel in a loop (e.g. src/backfill_all_hotels.py) — both are cheap to
+    compute for one hotel but wasteful to redo unchanged 1492 times.
+    """
+    if scores is None:
+        scores = category_scores_by_hotel(df)
+    if board is None:
+        board = leaderboard(df)
     trend = quarterly_trend(df, focus_hotel)
 
     categories = [
@@ -451,8 +464,17 @@ def compute_derived(website_data: dict, board: pd.DataFrame, focus_hotel: str) -
     average = board["overall_score"].mean()
     true_rank = int(focus_row["rank"])
 
-    worst = min(categories, key=lambda c: scores[c["name"]])
-    best = max(categories, key=lambda c: scores[c["name"]])
+    # Hotels with sparse reviews can have NO mentions of a given aspect —
+    # category_scores_by_hotel() marks that None, which pandas silently
+    # upcasts to NaN once it's in a DataFrame column. NaN comparisons never
+    # raise (they're just always False), so a naive min/max would still
+    # "work" but could inconsistently treat a no-data category as the
+    # worst/best one. Only consider categories with a real score; fall back
+    # to categories[0] in the pathological case where every aspect is
+    # unscored (would require a hotel with essentially zero reviews).
+    scored_categories = [c for c in categories if pd.notna(scores.get(c["name"]))]
+    worst = min(scored_categories, key=lambda c: scores[c["name"]]) if scored_categories else categories[0]
+    best = max(scored_categories, key=lambda c: scores[c["name"]]) if scored_categories else categories[0]
 
     return {
         "REGIONAL_STANDING": {
@@ -467,6 +489,25 @@ def compute_derived(website_data: dict, board: pd.DataFrame, focus_hotel: str) -
     }
 
 
+def json_safe(obj):
+    """Recursively replace float NaN with None.
+
+    pandas .mean() on an all-NaN group (e.g. a quarter where a hotel got zero
+    reviews mentioning some aspect) returns NaN, not None — and Python's
+    json.dumps emits that as a bare `NaN` token by default, which is not
+    valid JSON and Postgres's jsonb column correctly rejects. None/null is
+    the correct value here (same "silence isn't a neutral score" convention
+    used elsewhere in this file), so convert before serializing.
+    """
+    if isinstance(obj, float) and math.isnan(obj):
+        return None
+    if isinstance(obj, dict):
+        return {k: json_safe(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [json_safe(v) for v in obj]
+    return obj
+
+
 def push_to_neon(website_data: dict, board: pd.DataFrame, focus_hotel: str, hotel_slug: str) -> None:
     """Upsert the full dashboard payload (website_data + derived values) into
     Neon Postgres. Requires DATABASE_URL in the environment (see api/.env.example
@@ -479,7 +520,7 @@ def push_to_neon(website_data: dict, board: pd.DataFrame, focus_hotel: str, hote
     load_dotenv()
     database_url = os.environ["DATABASE_URL"]
 
-    payload = {**website_data, **compute_derived(website_data, board, focus_hotel)}
+    payload = json_safe({**website_data, **compute_derived(website_data, board, focus_hotel)})
 
     with psycopg2.connect(database_url) as conn, conn.cursor() as cur:
         cur.execute(

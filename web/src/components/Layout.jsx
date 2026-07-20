@@ -1,9 +1,14 @@
 import { Outlet, useLocation } from "react-router-dom"
 import { useEffect } from "react"
 import Header from "./Header"
+import ChatWidget from "./ChatWidget"
+import { useAuth } from "../hooks/useAuth"
+
+const CHAT_WIDGET_PATHS = ["/", "/dashboard"]
 
 export default function Layout() {
   const { pathname } = useLocation()
+  const { session } = useAuth()
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -15,6 +20,7 @@ export default function Layout() {
       <main>
         <Outlet />
       </main>
+      {session && CHAT_WIDGET_PATHS.includes(pathname) && <ChatWidget />}
     </div>
   )
 }

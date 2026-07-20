@@ -1,7 +1,11 @@
+import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Check } from "lucide-react"
+import { useAuth } from "../hooks/useAuth"
 
 const PLANS = [
   {
+    id: "starter",
     name: "Starter",
     tagline: "For exploring the public quadrant.",
     price: "$0",
@@ -12,6 +16,7 @@ const PLANS = [
     highlight: false,
   },
   {
+    id: "hotel_partner",
     name: "Hotel Partner",
     tagline: "For corporate travel managers.",
     price: "$1,490",
@@ -27,6 +32,7 @@ const PLANS = [
     highlight: true,
   },
   {
+    id: "corporate",
     name: "Corporate",
     tagline: "For chains and luxury agencies.",
     price: "Custom pricing",
@@ -44,6 +50,30 @@ const PLANS = [
 ]
 
 export default function Pricing() {
+  const { session, setPlan } = useAuth()
+  const navigate = useNavigate()
+  const [busyPlan, setBusyPlan] = useState(null)
+
+  async function handleCta(plan) {
+    if (!session) {
+      // Only the free plan has a real signup flow today — the paid tiers
+      // have no checkout/payment integration yet, so leave them inert for
+      // logged-out visitors rather than pretending to start a subscription.
+      if (plan.id === "starter") navigate("/register?from=pricing")
+      return
+    }
+    // Already logged in (e.g. redirected here after registering outside the
+    // pricing flow, per Feature 4) — picking any plan here just records the
+    // choice and sends them to their dashboard.
+    setBusyPlan(plan.id)
+    try {
+      await setPlan(plan.id)
+      navigate("/dashboard")
+    } finally {
+      setBusyPlan(null)
+    }
+  }
+
   return (
     <section className="max-w-6xl mx-auto px-6 py-20">
       <div className="text-center mb-14">
@@ -79,9 +109,11 @@ export default function Pricing() {
             </ul>
             <button
               type="button"
-              className={`w-full text-sm font-medium rounded-lg py-2.5 transition-colors ${plan.ctaClass}`}
+              onClick={() => handleCta(plan)}
+              disabled={busyPlan === plan.id}
+              className={`w-full text-sm font-medium rounded-lg py-2.5 transition-colors disabled:opacity-50 ${plan.ctaClass}`}
             >
-              {plan.cta}
+              {busyPlan === plan.id ? "Saving..." : plan.cta}
             </button>
           </div>
         ))}

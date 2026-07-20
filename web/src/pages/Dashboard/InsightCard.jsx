@@ -26,11 +26,11 @@ export default function InsightCard() {
             Your overall score is <strong>{you.score.toFixed(2)}</strong> — {isAboveAverage ? "just above" : "just below"}{" "}
             the region's average of <strong>{average.toFixed(2)}</strong>. The biggest opportunity right now is{" "}
             <strong>
-              {WORST_CATEGORY.name} ({worstScore.toFixed(1)}/10)
+              {WORST_CATEGORY.name} ({worstScore != null ? worstScore.toFixed(1) : "—"}/10)
             </strong>
             : {WORST_CATEGORY.insight.toLowerCase()} On the bright side,{" "}
             <strong>
-              {BEST_CATEGORY.name} ({bestScore.toFixed(1)}/10)
+              {BEST_CATEGORY.name} ({bestScore != null ? bestScore.toFixed(1) : "—"}/10)
             </strong>{" "}
             remains your strongest driver of guest satisfaction.
           </p>

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 import { Mail, Lock } from "lucide-react"
 import Logo from "../components/Logo"
 import { useAuth } from "../hooks/useAuth"
@@ -91,6 +91,12 @@ export default function Login() {
             >
               Sign in
             </button>
+            <p className="text-sm text-slate-500 text-center">
+              No account yet?{" "}
+              <Link to="/register" className="text-blue-600 hover:text-blue-800 font-medium">
+                Create one
+              </Link>
+            </p>
           </div>
         </form>
       </div>
