@@ -2,16 +2,22 @@ import { Link, NavLink } from "react-router-dom"
 import Logo from "./Logo"
 import { useAuth } from "../hooks/useAuth"
 
-const LINKS = [
+const LOGGED_OUT_LINKS = [
   { to: "/", label: "Methodology" },
   { to: "/dashboard", label: "Dashboard" },
-  { to: "/chat", label: "Chat" },
+  { to: "/pricing", label: "Pricing" },
+]
+
+const LOGGED_IN_LINKS = [
+  { to: "/", label: "Methodology" },
+  { to: "/dashboard", label: "Dashboard" },
   { to: "/quadrant", label: "Quadrant" },
   { to: "/pricing", label: "Pricing" },
 ]
 
 export default function Header() {
   const { session, logout } = useAuth()
+  const links = session ? LOGGED_IN_LINKS : LOGGED_OUT_LINKS
 
   return (
     <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-slate-100">
@@ -20,7 +26,7 @@ export default function Header() {
           <Logo />
         </Link>
         <nav className="hidden md:flex items-center gap-8">
-          {LINKS.map((link) => (
+          {links.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}

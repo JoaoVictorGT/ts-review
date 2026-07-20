@@ -3,9 +3,11 @@ import { useDashboardData } from "../../hooks/useDashboardData"
 export default function CommentsByDimension() {
   const { data } = useDashboardData()
   // Worst (highest % negative) first, so the categories needing the most
-  // attention surface at the top of the widget.
+  // attention surface at the top of the widget. total=0 (no mentions yet,
+  // e.g. a brand-new hotel) sorts as 0% negative, not NaN.
+  const negativeShare = (d) => (d.total > 0 ? d.negative / d.total : 0)
   const SORTED_BY_WORST = [...data.DIMENSION_COMMENTS].sort(
-    (a, b) => b.negative / b.total - a.negative / a.total,
+    (a, b) => negativeShare(b) - negativeShare(a),
   )
   return (
     <>
@@ -22,7 +24,7 @@ export default function CommentsByDimension() {
           </span>
         </div>
         {SORTED_BY_WORST.map((d) => {
-          const negPct = Math.round((d.negative / d.total) * 100)
+          const negPct = d.total > 0 ? Math.round((d.negative / d.total) * 100) : 0
           const posWidth = 100 - negPct
           return (
             <div key={d.name} className="mb-4 last:mb-0">

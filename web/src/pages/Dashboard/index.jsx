@@ -31,9 +31,10 @@ export default function Dashboard() {
     )
   }
 
-  const { REGIONAL_STANDING, COMPETITORS } = data
+  const { REGIONAL_STANDING, COMPETITORS, QUARTERLY_LABELS } = data
   const competitorId = selectedCompetitorId ?? COMPETITORS[0]?.id
   const hotelName = REGIONAL_STANDING.you.name.replace(" (You)", "")
+  const hasNoDataYet = QUARTERLY_LABELS.length === 0
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-16">
@@ -49,6 +50,13 @@ export default function Dashboard() {
           <p className="text-3xl font-semibold text-slate-900">{REGIONAL_STANDING.you.score.toFixed(2)}</p>
         </div>
       </div>
+
+      {hasNoDataYet && (
+        <div className="mb-6 bg-amber-50 border border-amber-200 text-amber-700 text-sm rounded-lg px-4 py-3">
+          We don't have enough guest reviews for {hotelName} yet — the numbers below will fill in as reviews
+          come in.
+        </div>
+      )}
 
       <InsightCard />
 

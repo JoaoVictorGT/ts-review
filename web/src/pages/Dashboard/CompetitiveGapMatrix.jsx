@@ -5,11 +5,26 @@ export default function CompetitiveGapMatrix({ activeFilter, selectedCompetitorI
   const { data } = useDashboardData()
   const { CATEGORIES, HOTEL_ARENA_SCORES, COMPETITORS } = data
   const competitor = COMPETITORS.find((c) => c.id === selectedCompetitorId)
-  const gaps = CATEGORIES.map((c) => ({
-    name: c.name,
-    gap: +(HOTEL_ARENA_SCORES[c.name] - competitor.scores[c.name]).toFixed(1),
-  }))
-  const maxAbs = Math.max(...gaps.map((g) => Math.abs(g.gap)))
+
+  if (!competitor) {
+    return (
+      <>
+        <p className="text-xs font-semibold text-slate-400 tracking-wider uppercase mb-3">Competitive gap</p>
+        <div className="bg-white border border-slate-200 rounded-xl p-6 mb-14 text-sm text-slate-400">
+          No competitor data yet for this hotel.
+        </div>
+      </>
+    )
+  }
+
+  const gaps = CATEGORIES.map((c) => {
+    const mine = HOTEL_ARENA_SCORES[c.name]
+    const theirs = competitor.scores[c.name]
+    const hasGap = mine != null && theirs != null
+    return { name: c.name, gap: hasGap ? +(mine - theirs).toFixed(1) : null }
+  })
+  const definedGaps = gaps.filter((g) => g.gap != null)
+  const maxAbs = definedGaps.length ? Math.max(...definedGaps.map((g) => Math.abs(g.gap))) : 1
 
   return (
     <>
@@ -36,9 +51,20 @@ export default function CompetitiveGapMatrix({ activeFilter, selectedCompetitorI
       <div className="bg-white border border-slate-200 rounded-xl p-6 mb-14">
         <div className="flex flex-col gap-4 relative">
           {gaps.map((g) => {
+            const isActive = activeFilter === g.name
+            if (g.gap == null) {
+              return (
+                <div
+                  key={g.name}
+                  className={`flex items-center gap-4 ${isActive ? "bg-blue-50/60 -mx-2 px-2 rounded-lg" : ""}`}
+                >
+                  <span className="w-24 shrink-0 text-sm text-slate-600">{g.name}</span>
+                  <div className="flex-1 h-7 flex items-center text-xs text-slate-400">Not enough data</div>
+                </div>
+              )
+            }
             const widthPct = (Math.abs(g.gap) / maxAbs) * 48
             const isPositive = g.gap > 0
-            const isActive = activeFilter === g.name
             const direction = isPositive ? "ahead of" : "behind"
             const tooltip = `You are ${Math.abs(g.gap).toFixed(1)} points ${direction} ${competitor.name} in this pillar`
             return (

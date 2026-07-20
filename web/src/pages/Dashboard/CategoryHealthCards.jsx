@@ -16,8 +16,9 @@ export default function CategoryHealthCards({ activeFilter, onToggleFilter }) {
     <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-14">
       {CATEGORIES.map((c) => {
         const score = HOTEL_ARENA_SCORES[c.name]
-        const status = getStatus(score)
-        const pct = Math.min(100, (score / 10) * 100)
+        const hasScore = score != null
+        const status = hasScore ? getStatus(score) : null
+        const pct = hasScore ? Math.min(100, (score / 10) * 100) : 0
         const isActive = activeFilter === c.name
         const Icon = ICONS[c.icon]
         return (
@@ -31,15 +32,23 @@ export default function CategoryHealthCards({ activeFilter, onToggleFilter }) {
           >
             <div className="flex items-center justify-between mb-4">
               <Icon className="w-5 h-5 text-slate-400" />
-              <span className={`text-xs font-medium rounded-full px-2.5 py-1 ${status.badge} ${status.pulse}`}>
-                {status.label}
-              </span>
+              {hasScore ? (
+                <span className={`text-xs font-medium rounded-full px-2.5 py-1 ${status.badge} ${status.pulse}`}>
+                  {status.label}
+                </span>
+              ) : (
+                <span className="text-xs font-medium rounded-full px-2.5 py-1 bg-slate-50 text-slate-400 border border-slate-200">
+                  No data
+                </span>
+              )}
             </div>
-            <p className="text-3xl font-semibold text-slate-900 mb-2">{score.toFixed(1)}</p>
+            <p className="text-3xl font-semibold text-slate-900 mb-2">{hasScore ? score.toFixed(1) : "—"}</p>
             <div className="h-2 w-full bg-slate-100 rounded-full overflow-hidden mb-3">
-              <div className="h-full rounded-full" style={{ width: `${pct}%`, background: status.bar }} />
+              <div className="h-full rounded-full" style={{ width: `${pct}%`, background: status?.bar ?? "#cbd5e1" }} />
             </div>
-            <p className="text-xs text-slate-500 leading-relaxed">{c.insight}</p>
+            <p className="text-xs text-slate-500 leading-relaxed">
+              {hasScore ? c.insight : "Not enough guest mentions yet."}
+            </p>
             <p className="text-xs font-medium text-slate-400 mt-2">{c.name}</p>
           </button>
         )
