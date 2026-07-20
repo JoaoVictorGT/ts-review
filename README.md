@@ -59,6 +59,19 @@ python src/panel_feasibility.py    # statistical feasibility of the hotel x quar
 
 Reports at `reports/01_data_audit.md` and figures at `figures/`.
 
+## Web app
+
+The `web/` folder is the TrueStay front-end (React + Vite), currently running on mock data. See
+[`web/README.md`](web/README.md) for how to run it locally — short version:
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+Then open http://localhost:5173.
+
 ## Roadmap
 
 1. ✅ Data audit

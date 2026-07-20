@@ -1,16 +1,71 @@
-# React + Vite
+# TrueStay — Web App
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + Vite front-end for the TrueStay hotel-intelligence platform. Currently runs entirely on
+mock data (`src/data/mockData.js`) — no backend is connected yet.
 
-Currently, two official plugins are available:
+## Prerequisites
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js 20+ (tested with v24)
 
-## React Compiler
+## Run it locally
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+1. Open a terminal (PowerShell, or your editor's integrated terminal).
+2. Go to this folder. On Windows, the repo path has spaces — keep the quotes:
+   ```powershell
+   cd "C:\path\to\hotelReviews\web"
+   ```
+3. Install dependencies (first time only, or whenever `package.json` changes):
+   ```bash
+   npm install
+   ```
+4. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+5. You should see something like:
+   ```
+   VITE vX.X.X  ready in XXX ms
+   ➜  Local:   http://localhost:5173/
+   ```
+6. Open **http://localhost:5173** in your browser.
 
-## Expanding the Oxlint configuration
+Other notes:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- The dev server has hot-reload — edits to any file under `src/` show up immediately, no restart needed.
+- To stop it: click the terminal running `npm run dev` and press `Ctrl+C`.
+- If port 5173 is already in use, Vite automatically picks the next free port (5174, 5175, …) — check the terminal output for the actual URL.
+- If a step fails, the exact error text in the terminal is what matters — copy it verbatim when asking for help.
+
+## Other commands
+
+```bash
+npm run build      # production build -> web/dist/ (also catches type/import errors)
+npm run lint        # oxlint — checks code style issues
+npm run preview     # serves the production build locally, to sanity-check it before deploying
+```
+
+## Project structure
+
+```
+src/
+  main.jsx              # entry point, wraps the app in BrowserRouter
+  App.jsx                # route definitions
+  components/            # Layout, Header, Logo — shared across every page
+  data/mockData.js        # all mock data lives here; swap for a real API once the backend exists
+  pages/
+    Home.jsx               # "/" — marketing/methodology page
+    Pricing.jsx             # "/pricing"
+    Login.jsx               # "/login" — form only, no real auth yet
+    Dashboard/               # "/dashboard" — the core analytics screen (insight card, health cards,
+                              #   gap matrix, monthly trend, leaderboard, comments, vulnerabilities)
+    Chat/                    # "/chat" — conversational agent (keyword-matched canned replies for now)
+    Quadrant/                 # "/quadrant" — price vs. quality scatter plot + hotel detail drawer
+```
+
+## Notes
+
+- Every number shown (scores, rankings, regional average, chat replies) is derived from
+  `src/data/mockData.js` — nothing is hardcoded twice, so changing a value there updates every
+  component that uses it.
+- No backend yet. See the project root's `README.md` for the Python data pipeline this app will
+  eventually consume.

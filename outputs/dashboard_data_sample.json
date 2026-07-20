@@ -1,0 +1,452 @@
+{
+  "focus_hotel": "Hotel Arena",
+  "category_scores_by_hotel": [
+    {
+      "Hotel_Name": "Hotel Arena",
+      "n_reviews": 405,
+      "cleanliness_score": 5.52,
+      "cleanliness_mentions": 87,
+      "staff_score": 7.08,
+      "staff_mentions": 225,
+      "location_score": 7.57,
+      "location_mentions": 188,
+      "comfort_score": 7.3,
+      "comfort_mentions": 173,
+      "food_score": 6.77,
+      "food_mentions": 162,
+      "value_score": 6.13,
+      "value_mentions": 62,
+      "noise_score": 3.2,
+      "noise_mentions": 64,
+      "facilities_score": 5.36,
+      "facilities_mentions": 112
+    },
+    {
+      "Hotel_Name": "K K Hotel George",
+      "n_reviews": 95,
+      "cleanliness_score": 8.15,
+      "cleanliness_mentions": 31,
+      "staff_score": 7.25,
+      "staff_mentions": 64,
+      "location_score": 7.57,
+      "location_mentions": 75,
+      "comfort_score": 7.12,
+      "comfort_mentions": 41,
+      "food_score": 6.46,
+      "food_mentions": 54,
+      "value_score": 5.44,
+      "value_mentions": 17,
+      "noise_score": 5.27,
+      "noise_mentions": 29,
+      "facilities_score": 5.91,
+      "facilities_mentions": 46
+    }
+  ],
+  "leaderboard": [
+    {
+      "rank": 1,
+      "Hotel_Name": "K K Hotel George",
+      "overall_score": 8.32,
+      "n_reviews": 95
+    },
+    {
+      "rank": 2,
+      "Hotel_Name": "Hotel Arena",
+      "overall_score": 7.84,
+      "n_reviews": 405
+    }
+  ],
+  "quarterly_trend": [
+    {
+      "quarter": "2015Q3",
+      "overall": 8.68,
+      "food": 7.72,
+      "comfort": 8.6,
+      "cleanliness": 6.45,
+      "staff": 8.19,
+      "location": 7.02
+    },
+    {
+      "quarter": "2015Q4",
+      "overall": 7.75,
+      "food": 7.45,
+      "comfort": 5.51,
+      "cleanliness": 6.57,
+      "staff": 6.42,
+      "location": 8.34
+    },
+    {
+      "quarter": "2016Q1",
+      "overall": 7.79,
+      "food": 6.59,
+      "comfort": 7.58,
+      "cleanliness": 5.13,
+      "staff": 7.56,
+      "location": 7.09
+    },
+    {
+      "quarter": "2016Q2",
+      "overall": 7.29,
+      "food": 7.0,
+      "comfort": 7.12,
+      "cleanliness": 4.3,
+      "staff": 7.58,
+      "location": 7.94
+    },
+    {
+      "quarter": "2016Q3",
+      "overall": 8.15,
+      "food": 6.43,
+      "comfort": 7.86,
+      "cleanliness": 5.85,
+      "staff": 8.41,
+      "location": 8.38
+    },
+    {
+      "quarter": "2016Q4",
+      "overall": 7.45,
+      "food": 5.78,
+      "comfort": 7.29,
+      "cleanliness": 6.01,
+      "staff": 6.52,
+      "location": 7.28
+    },
+    {
+      "quarter": "2017Q1",
+      "overall": 8.56,
+      "food": 6.62,
+      "comfort": 7.23,
+      "cleanliness": 7.42,
+      "staff": 7.12,
+      "location": 8.06
+    },
+    {
+      "quarter": "2017Q2",
+      "overall": 7.51,
+      "food": 5.83,
+      "comfort": 7.24,
+      "cleanliness": 4.64,
+      "staff": 7.11,
+      "location": 6.95
+    },
+    {
+      "quarter": "2017Q3",
+      "overall": 7.44,
+      "food": 7.59,
+      "comfort": 7.36,
+      "cleanliness": 2.11,
+      "staff": 3.63,
+      "location": 7.46
+    }
+  ],
+  "dimension_comments": [
+    {
+      "name": "Food",
+      "total": 162,
+      "negative": 45
+    },
+    {
+      "name": "Comfort",
+      "total": 173,
+      "negative": 44
+    },
+    {
+      "name": "Cleanliness",
+      "total": 87,
+      "negative": 38
+    },
+    {
+      "name": "Staff",
+      "total": 225,
+      "negative": 64
+    },
+    {
+      "name": "Location",
+      "total": 188,
+      "negative": 39
+    }
+  ],
+  "category_comments": {
+    "Food": [
+      {
+        "sentiment": "positive",
+        "text": "a new one Bit confusing Secondly the on site restaurant is a bit lacking very well thought out and e (...) very well thought out and excellent quality food for anyone of a vegetarian or vegan backgrou",
+        "nationality": "Ireland",
+        "date": "8/3/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "good and staff were ok It is cute hotel the breakfast range is nice Will go back . Rooms are nice (...) nside the rooms are very very basic just tea coffee and boiler and no bar empty fridge",
+        "nationality": "Australia",
+        "date": "7/31/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "Good restaurant with modern design great chill out place Gre",
+        "nationality": "Poland",
+        "date": "7/24/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "location Set in a lovely park friendly staff Food high quality We Oth enjoyed the breakfast .",
+        "nationality": "United Kingdom",
+        "date": "7/17/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "Great location in nice surroundings the bar and restaurant are nice and have a lovely ou",
+        "nationality": "United Kingdom",
+        "date": "7/31/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "ff pointed us in the wrong direction No late dinner bar closes at 1 am Ugly view on trash lorry",
+        "nationality": "France",
+        "date": "7/6/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "The breakfast was the only positive element of this hotel (...) and a good selection of selection of health food dishes on the buffet We did not try the rest",
+        "nationality": "France",
+        "date": "6/12/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "Friendly staff The bar restaurant area is lovely and overlooks the",
+        "nationality": "United Kingdom",
+        "date": "5/11/2017"
+      }
+    ],
+    "Comfort": [
+      {
+        "sentiment": "positive",
+        "text": "The room is spacious and bright The hotel is located in a quiet a (...) e our sheet and duvet everyday but just made bed They also didn\\'t clean the floor and change",
+        "nationality": "United Kingdom",
+        "date": "7/17/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "Rooms were stunningly decorated and really spacious in the top of the building Pictures are of r",
+        "nationality": "United Kingdom",
+        "date": "7/7/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "Comfy bed good location . The floor in my room was",
+        "nationality": "United Kingdom",
+        "date": "7/6/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "ion for its unique structure and location My spacious and comfortable room had a large double pane",
+        "nationality": "Italy",
+        "date": "7/4/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "of in my room was leaking luckily not on the bed you could also see signs of earlier water da (...) y late around midnight when I was already in bed and ready to sleep",
+        "nationality": "United Kingdom",
+        "date": "7/31/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "The room was big enough and the bed is good The breakfast food and service on th (...) ondition makes so much noise and its hard to sleep at night",
+        "nationality": "Norway",
+        "date": "7/8/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "ful park and have a nice interior design The bed was really comfortable . Sadly I cannot say (...) cky like juice or something just next to our bed We called the front desk and they said they",
+        "nationality": "Germany",
+        "date": "6/10/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "ery slippery No shower chair handles or bars Bed was uncomfortable and mattress pad was too b",
+        "nationality": "United States of America",
+        "date": "5/11/2017"
+      }
+    ],
+    "Cleanliness": [
+      {
+        "sentiment": "positive",
+        "text": "Even though the pictures show very clean rooms the actual room was quit dirty and out",
+        "nationality": "Belgium",
+        "date": "7/9/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "ies weren\\'t updated daily And the floor was dusty and had hair on it and that was upon our arr",
+        "nationality": "Australia",
+        "date": "6/20/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "and advice Wonderful bright comfortable and clean rooms Beds are amazing felt as if we were sl (...) s if we were sleeping on clouds Bathroom was clean spacious and airy We had Shampoo Body wash t",
+        "nationality": "United Kingdom",
+        "date": "5/25/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "ive Set in a beautiful location The room was clean well decorated and the bed was one of the mo",
+        "nationality": "United Kingdom",
+        "date": "3/29/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "of a bio weapon at least i guessed so by the smell of it I intimately asked to change the room",
+        "nationality": "Russia",
+        "date": "8/3/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "also has quite some character . My room was dirty and I was afraid to walk barefoot on the flo (...) t on the floor which looked as if it was not cleaned in weeks White furniture which looked nice i",
+        "nationality": "United Kingdom",
+        "date": "7/31/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "l is located in a quiet and beautiful park . Cleaner did not change our sheet and duvet everyday (...) everyday but just made bed They also didn\\'t clean the floor and changed the body gel when we r",
+        "nationality": "United Kingdom",
+        "date": "7/17/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "od location . The floor in my room was filfy dirty Very basic rooms I had a 20yr old tv in my r",
+        "nationality": "United Kingdom",
+        "date": "7/6/2017"
+      }
+    ],
+    "Staff": [
+      {
+        "sentiment": "positive",
+        "text": "Location was good and staff were ok It is cute hotel the breakfast range",
+        "nationality": "Australia",
+        "date": "7/31/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "Good location Set in a lovely park friendly staff Food high quality We Oth enjoyed the b",
+        "nationality": "United Kingdom",
+        "date": "7/17/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "able room I\\'ll come back for sure there The staff very gentle one Spanish man really really go",
+        "nationality": "Italy",
+        "date": "7/3/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "le The hotel is lovely and the bed was comfy Staff were very friendly and helpful and familiari",
+        "nationality": "Ireland",
+        "date": "6/30/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "red a room but only the next day SO i had to check out the next day before 11 o clock in order to g (...) day So we had to wait till 13 00 in order to check in my new room what a wonderful waist of my tim",
+        "nationality": "Russia",
+        "date": "8/3/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "at location surroundings rooms amenities and service Two recommendations however firstly the staf (...) commendations however firstly the staff upon check in are very confusing regarding deposit payment",
+        "nationality": "Ireland",
+        "date": "8/3/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "ngry dog My shower drain was clogged and the staff did not respond to my request to clean it On (...) omplained about water damage the night shift manager offered to move me to a different room but t",
+        "nationality": "United Kingdom",
+        "date": "7/31/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "en we arrived that's room was booked and the staff told me we could only book the villa suite t",
+        "nationality": "New Zealand",
+        "date": "7/24/2017"
+      }
+    ],
+    "Location": [
+      {
+        "sentiment": "positive",
+        "text": "No real complaints the hotel was great great location surroundings rooms amenities and service Two",
+        "nationality": "Ireland",
+        "date": "8/3/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "Location was good and staff were ok It is cute hotel",
+        "nationality": "Australia",
+        "date": "7/31/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "dern design great chill out place Great park nearby the hotel and awesome main stairs . Backyard",
+        "nationality": "Poland",
+        "date": "7/24/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "The room is spacious and bright The hotel is located in a quiet and beautiful park . Cleaner did",
+        "nationality": "United Kingdom",
+        "date": "7/17/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "Great location in nice surroundings the bar and restaurant (...) estaurant are nice and have a lovely outdoor area The building also has quite some character .",
+        "nationality": "United Kingdom",
+        "date": "7/31/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "Amazing location and building Romantic setting . You When I b",
+        "nationality": "New Zealand",
+        "date": "7/24/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "l there is a big park which is very good for walk in the morning and evening Many people are h",
+        "nationality": "Norway",
+        "date": "7/8/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "Style location rooms . 6 30 AM started big noise workers lo",
+        "nationality": "France",
+        "date": "7/6/2017"
+      }
+    ]
+  },
+  "competitor_gaps": [
+    {
+      "competitor": "K K Hotel George",
+      "Food": 0.31,
+      "Comfort": 0.18,
+      "Cleanliness": -2.63,
+      "Staff": -0.17,
+      "Location": 0.0
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "competitor": "K K Hotel George",
+      "category": "Food",
+      "review": "No coffee or tea in the room or lobby No one to help w"
+    }
+  ],
+  "dropped_aspect_coverage": [
+    {
+      "aspect": "Value for Money",
+      "mentions_in_sample": 79
+    },
+    {
+      "aspect": "Noise",
+      "mentions_in_sample": 93
+    },
+    {
+      "aspect": "Facilities",
+      "mentions_in_sample": 158
+    }
+  ]
+}

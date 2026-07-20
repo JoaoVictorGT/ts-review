@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { ShieldCheck, TrendingUp, Search } from "lucide-react"
+import { ShieldCheck, Search, Layers } from "lucide-react"
 
 const METHODOLOGY = [
   {
@@ -8,9 +8,9 @@ const METHODOLOGY = [
     text: "Every stay is verified by external auditors, without interference from the rated hotels.",
   },
   {
-    icon: TrendingUp,
-    title: "8 Data Dimensions",
-    text: "Cleanliness, staff, location, comfort, food, value for money, noise and facilities are measured and weighted into a single, comparable score.",
+    icon: Layers,
+    title: "Full-Picture Scoring",
+    text: "Every score reflects a rigorous, multi-dimensional read of the stay — no corner of the guest experience goes unmeasured.",
   },
   {
     icon: Search,

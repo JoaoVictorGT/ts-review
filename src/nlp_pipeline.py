@@ -238,6 +238,22 @@ EVIDENCE_CONTEXT_CHARS = 45
 EVIDENCE_MAX_SNIPPETS = 2
 
 
+def _score_from_label(label: str, confidence: float) -> float:
+    """Map an ABSA label + confidence to a 0-10 scale (0 = most negative, 10 = most positive).
+
+    Deterministic remap of the classifier's own confidence — no separate model,
+    nothing invented, just a rescale of a number the model already produced.
+    """
+    label = label.lower()
+    if label == "positive":
+        strength = confidence
+    elif label == "negative":
+        strength = -confidence
+    else:  # neutral
+        strength = 0.0
+    return round(5.0 + 5.0 * strength, 2)
+
+
 def _extract_evidence(text: str, aspect: str) -> str:
     """Return verbatim context snippet(s) around each aspect keyword hit.
 
