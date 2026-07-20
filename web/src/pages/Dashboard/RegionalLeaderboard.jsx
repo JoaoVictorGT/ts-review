@@ -1,6 +1,8 @@
-import { LEADERBOARD } from "../../data/mockData"
+import { useDashboardData } from "../../hooks/useDashboardData"
 
 export default function RegionalLeaderboard() {
+  const { data } = useDashboardData()
+  const { LEADERBOARD } = data
   return (
     <div>
       <p className="text-xs font-semibold text-slate-400 tracking-wider uppercase mb-3">Regional leaderboard</p>

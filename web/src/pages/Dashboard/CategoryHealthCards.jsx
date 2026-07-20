@@ -1,5 +1,5 @@
 import { Utensils, Bed, Sparkles, Users, MapPin } from "lucide-react"
-import { CATEGORIES, HOTEL_ARENA_SCORES } from "../../data/mockData"
+import { useDashboardData } from "../../hooks/useDashboardData"
 
 const ICONS = { utensils: Utensils, bed: Bed, sparkles: Sparkles, users: Users, "map-pin": MapPin }
 
@@ -10,6 +10,8 @@ function getStatus(score) {
 }
 
 export default function CategoryHealthCards({ activeFilter, onToggleFilter }) {
+  const { data } = useDashboardData()
+  const { CATEGORIES, HOTEL_ARENA_SCORES } = data
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-14">
       {CATEGORIES.map((c) => {

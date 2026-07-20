@@ -1,14 +1,25 @@
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { Mail, Lock } from "lucide-react"
 import Logo from "../components/Logo"
+import { useAuth } from "../hooks/useAuth"
 
 export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [error, setError] = useState(null)
+  const navigate = useNavigate()
+  const { login } = useAuth()
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault()
-    // Wire up to real auth once the backend exists — intentionally a no-op for now.
+    setError(null)
+    try {
+      await login(email, password)
+      navigate("/dashboard")
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
   return (
@@ -36,6 +47,11 @@ export default function Login() {
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
           <h1 className="text-2xl font-semibold text-slate-900 mb-1">Welcome back</h1>
           <p className="text-sm text-slate-500 mb-8">Sign in to access your reports.</p>
+          {error && (
+            <div className="mb-4 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm px-3 py-2">
+              {error}
+            </div>
+          )}
           <div className="space-y-4">
             <div>
               <label htmlFor="email" className="text-xs font-medium text-slate-600">

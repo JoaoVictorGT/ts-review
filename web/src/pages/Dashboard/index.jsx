@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { Filter, X } from "lucide-react"
-import { REGIONAL_STANDING, COMPETITORS } from "../../data/mockData"
+import { useDashboardData } from "../../hooks/useDashboardData"
 import InsightCard from "./InsightCard"
 import CategoryHealthCards from "./CategoryHealthCards"
 import CompetitiveGapMatrix from "./CompetitiveGapMatrix"
@@ -12,18 +12,34 @@ import CategoryComments from "./CategoryComments"
 import VulnerabilityTable from "./VulnerabilityTable"
 
 export default function Dashboard() {
+  const { data, loading, error } = useDashboardData()
   const [activeFilter, setActiveFilter] = useState(null)
-  const [selectedCompetitorId, setSelectedCompetitorId] = useState(COMPETITORS[0]?.id)
+  const [selectedCompetitorId, setSelectedCompetitorId] = useState(null)
 
   function toggleFilter(name) {
     setActiveFilter((prev) => (prev === name ? null : name))
   }
 
+  if (loading) {
+    return <div className="max-w-6xl mx-auto px-6 py-16 text-slate-400">Loading dashboard…</div>
+  }
+  if (error) {
+    return (
+      <div className="max-w-6xl mx-auto px-6 py-16 text-red-500">
+        Couldn't load dashboard data: {error.message}
+      </div>
+    )
+  }
+
+  const { REGIONAL_STANDING, COMPETITORS } = data
+  const competitorId = selectedCompetitorId ?? COMPETITORS[0]?.id
+  const hotelName = REGIONAL_STANDING.you.name.replace(" (You)", "")
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-16">
       <div className="flex items-center justify-between mb-10 flex-wrap gap-4">
         <div>
-          <h1 className="text-3xl font-semibold text-slate-900">Central Dashboard — Hotel Arena</h1>
+          <h1 className="text-3xl font-semibold text-slate-900">Central Dashboard — {hotelName}</h1>
           <p className="text-slate-500 mt-2">
             Health by category, competitive gap, score trend, ranking, and guest feedback.
           </p>
@@ -53,7 +69,7 @@ export default function Dashboard() {
 
       <CompetitiveGapMatrix
         activeFilter={activeFilter}
-        selectedCompetitorId={selectedCompetitorId}
+        selectedCompetitorId={competitorId}
         onSelectCompetitor={setSelectedCompetitorId}
       />
 

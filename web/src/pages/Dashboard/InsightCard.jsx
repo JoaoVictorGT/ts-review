@@ -1,5 +1,5 @@
 import { Sparkles } from "lucide-react"
-import { HOTEL_ARENA_SCORES, WORST_CATEGORY, BEST_CATEGORY, REGIONAL_STANDING } from "../../data/mockData"
+import { useDashboardData } from "../../hooks/useDashboardData"
 
 /**
  * A single plain-language takeaway synthesizing the score, the regional
@@ -7,6 +7,8 @@ import { HOTEL_ARENA_SCORES, WORST_CATEGORY, BEST_CATEGORY, REGIONAL_STANDING } 
  * the charts below but still need to walk away knowing what to do next.
  */
 export default function InsightCard() {
+  const { data } = useDashboardData()
+  const { HOTEL_ARENA_SCORES, WORST_CATEGORY, BEST_CATEGORY, REGIONAL_STANDING } = data
   const { you, average, delta } = REGIONAL_STANDING
   const isAboveAverage = delta >= 0
   const worstScore = HOTEL_ARENA_SCORES[WORST_CATEGORY.name]

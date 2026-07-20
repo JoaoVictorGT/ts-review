@@ -1,10 +1,16 @@
 import { TrendingUp, TrendingDown } from "lucide-react"
-import { REGIONAL_STANDING } from "../../data/mockData"
+import { useDashboardData } from "../../hooks/useDashboardData"
 
 export default function RegionalPosition() {
-  const { you, total, average, delta, percentBetterThan } = REGIONAL_STANDING
+  const { data } = useDashboardData()
+  const { you, total, average, delta, percentBetterThan } = data.REGIONAL_STANDING
+  const { WORST_CATEGORY, BEST_CATEGORY } = data
   const isAboveAverage = delta >= 0
   const isTopHalf = percentBetterThan >= 50
+  const hotelName = you.name.replace(" (You)", "")
+  const trendPhrase =
+    you.trend === "up" ? "trending upward" : you.trend === "down" ? "trending downward" : "holding steady"
+  const narrative = `${hotelName} is ${trendPhrase} overall, with ${BEST_CATEGORY.name} its strongest category and ${WORST_CATEGORY.name} its biggest opportunity for improvement.`
 
   return (
     <div>
@@ -35,10 +41,7 @@ export default function RegionalPosition() {
           </span>
         </div>
 
-        <p className="text-sm text-slate-500 leading-relaxed">
-          Hotel Arena climbed one spot last month, driven by its Location score. Comfort and Cleanliness remain the
-          main risks to its ranking position.
-        </p>
+        <p className="text-sm text-slate-500 leading-relaxed">{narrative}</p>
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import { X, ChevronRight } from "lucide-react"
-import { QUADRANT_STYLES } from "../../data/mockData"
+import { QUADRANT_STYLES } from "../../data/staticDisplayData"
 
 export default function HotelDrawer({ hotel, onClose }) {
   if (!hotel) return null
