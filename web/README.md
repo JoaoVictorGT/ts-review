@@ -1,7 +1,8 @@
 # TrueStay — Web App
 
-React + Vite front-end for the TrueStay hotel-intelligence platform. Currently runs entirely on
-mock data (`src/data/mockData.js`) — no backend is connected yet.
+**Live site:** https://truestayco.com
+
+React + Vite front-end for the TrueStay hotel-intelligence platform.
 
 ## Prerequisites
 
