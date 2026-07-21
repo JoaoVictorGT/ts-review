@@ -4,13 +4,24 @@ import { useDashboardData } from "../../hooks/useDashboardData"
 export default function RegionalPosition() {
   const { data } = useDashboardData()
   const { you, total, average, delta, percentBetterThan } = data.REGIONAL_STANDING
-  const { WORST_CATEGORY, BEST_CATEGORY } = data
+  const { WORST_CATEGORY, BEST_CATEGORY, QUARTERLY_LABELS } = data
   const isAboveAverage = delta >= 0
   const isTopHalf = percentBetterThan >= 50
   const hotelName = you.name.replace(" (You)", "")
   const trendPhrase =
     you.trend === "up" ? "trending upward" : you.trend === "down" ? "trending downward" : "holding steady"
   const narrative = `${hotelName} is ${trendPhrase} overall, with ${BEST_CATEGORY.name} its strongest category and ${WORST_CATEGORY.name} its biggest opportunity for improvement.`
+
+  if (QUARTERLY_LABELS.length === 0) {
+    return (
+      <div>
+        <p className="text-xs font-semibold text-slate-400 tracking-wider uppercase mb-3">Regional position</p>
+        <div className="bg-white border border-slate-200 rounded-xl p-6 h-full flex items-center text-sm text-slate-400">
+          Regional ranking available once we have enough reviews for this hotel.
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div>

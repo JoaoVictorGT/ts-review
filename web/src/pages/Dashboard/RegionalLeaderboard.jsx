@@ -2,7 +2,19 @@ import { useDashboardData } from "../../hooks/useDashboardData"
 
 export default function RegionalLeaderboard() {
   const { data } = useDashboardData()
-  const { LEADERBOARD } = data
+  const { LEADERBOARD, QUARTERLY_LABELS } = data
+
+  if (QUARTERLY_LABELS.length === 0) {
+    return (
+      <div>
+        <p className="text-xs font-semibold text-slate-400 tracking-wider uppercase mb-3">Regional leaderboard</p>
+        <div className="bg-white border border-slate-200 rounded-xl p-6 text-sm text-slate-400">
+          Ranking available once we have enough reviews for this hotel.
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div>
       <p className="text-xs font-semibold text-slate-400 tracking-wider uppercase mb-3">Regional leaderboard</p>
