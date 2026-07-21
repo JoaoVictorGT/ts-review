@@ -8,17 +8,22 @@ export default function Login() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState(null)
+  const [submitting, setSubmitting] = useState(false)
   const navigate = useNavigate()
   const { login } = useAuth()
 
   async function handleSubmit(event) {
     event.preventDefault()
+    if (submitting) return
     setError(null)
+    setSubmitting(true)
     try {
       await login(email, password)
       navigate("/dashboard")
     } catch (err) {
       setError(err.message)
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -87,9 +92,10 @@ export default function Login() {
             </div>
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-sky-400 to-blue-600 text-white text-sm font-medium rounded-lg py-2.5 shadow-sm hover:shadow-md transition-shadow"
+              disabled={submitting}
+              className="w-full bg-gradient-to-r from-sky-400 to-blue-600 text-white text-sm font-medium rounded-lg py-2.5 shadow-sm hover:shadow-md transition-shadow disabled:opacity-50"
             >
-              Sign in
+              {submitting ? "Signing in..." : "Sign in"}
             </button>
             <p className="text-sm text-slate-500 text-center">
               No account yet?{" "}
