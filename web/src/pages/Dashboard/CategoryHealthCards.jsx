@@ -1,7 +1,7 @@
-import { Utensils, Bed, Sparkles, Users, MapPin } from "lucide-react"
+import { Utensils, Bed, Sparkles, Users, MapPin, Wrench } from "lucide-react"
 import { useDashboardData } from "../../hooks/useDashboardData"
 
-const ICONS = { utensils: Utensils, bed: Bed, sparkles: Sparkles, users: Users, "map-pin": MapPin }
+const ICONS = { utensils: Utensils, bed: Bed, sparkles: Sparkles, users: Users, "map-pin": MapPin, wrench: Wrench }
 
 function getStatus(score) {
   if (score >= 8.5) return { label: "Excellent", badge: "bg-emerald-50 text-emerald-700 border border-emerald-200", bar: "#22c55e", pulse: "" }
@@ -13,7 +13,7 @@ export default function CategoryHealthCards({ activeFilter, onToggleFilter }) {
   const { data } = useDashboardData()
   const { CATEGORIES, HOTEL_ARENA_SCORES } = data
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-14">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4 mb-14">
       {CATEGORIES.map((c) => {
         const score = HOTEL_ARENA_SCORES[c.name]
         const hasScore = score != null

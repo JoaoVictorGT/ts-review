@@ -4,6 +4,7 @@ import { useDashboardData } from "../../hooks/useDashboardData"
 import InsightCard from "./InsightCard"
 import CategoryHealthCards from "./CategoryHealthCards"
 import CompetitiveGapMatrix from "./CompetitiveGapMatrix"
+import ScoreImprovementPlan from "./ScoreImprovementPlan"
 import MonthlyScoreTrend from "./MonthlyScoreTrend"
 import RegionalLeaderboard from "./RegionalLeaderboard"
 import RegionalPosition from "./RegionalPosition"
@@ -80,6 +81,8 @@ export default function Dashboard() {
         selectedCompetitorId={competitorId}
         onSelectCompetitor={setSelectedCompetitorId}
       />
+
+      <ScoreImprovementPlan />
 
       <MonthlyScoreTrend />
 

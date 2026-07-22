@@ -1,5 +1,5 @@
 {
-  "focus_hotel": "Hilton London Wembley",
+  "focus_hotel": "Hotel Arena",
   "category_scores_by_hotel": [
     {
       "Hotel_Name": "11 Cadogan Gardens",
@@ -38799,449 +38799,518 @@
   "quarterly_trend": [
     {
       "quarter": "2015Q3",
-      "overall": 8.75,
-      "food": 5.93,
-      "comfort": 7.5,
-      "cleanliness": 7.2,
-      "staff": 7.46,
-      "location": 7.83
+      "overall": 8.68,
+      "food": 7.72,
+      "comfort": 8.6,
+      "cleanliness": 6.45,
+      "staff": 8.19,
+      "location": 7.02,
+      "facilities": 7.09
     },
     {
       "quarter": "2015Q4",
-      "overall": 8.95,
-      "food": 6.75,
-      "comfort": 8.42,
-      "cleanliness": 8.62,
-      "staff": 8.03,
-      "location": 8.38
+      "overall": 7.75,
+      "food": 7.45,
+      "comfort": 5.51,
+      "cleanliness": 6.58,
+      "staff": 6.42,
+      "location": 8.35,
+      "facilities": 3.3
     },
     {
       "quarter": "2016Q1",
-      "overall": 8.69,
-      "food": 6.17,
-      "comfort": 8.23,
-      "cleanliness": 8.02,
-      "staff": 7.2,
-      "location": 7.45
+      "overall": 7.79,
+      "food": 6.59,
+      "comfort": 7.58,
+      "cleanliness": 5.13,
+      "staff": 7.56,
+      "location": 7.09,
+      "facilities": 6.07
     },
     {
       "quarter": "2016Q2",
-      "overall": 8.89,
+      "overall": 7.29,
       "food": 7.0,
-      "comfort": 8.14,
-      "cleanliness": 7.87,
-      "staff": 7.22,
-      "location": 7.26
+      "comfort": 7.12,
+      "cleanliness": 4.3,
+      "staff": 7.58,
+      "location": 7.94,
+      "facilities": 4.8
     },
     {
       "quarter": "2016Q3",
-      "overall": 8.7,
+      "overall": 8.15,
       "food": 6.43,
-      "comfort": 8.22,
-      "cleanliness": 7.47,
-      "staff": 6.57,
-      "location": 8.18
+      "comfort": 7.86,
+      "cleanliness": 5.85,
+      "staff": 8.41,
+      "location": 8.38,
+      "facilities": 2.31
     },
     {
       "quarter": "2016Q4",
-      "overall": 8.76,
-      "food": 6.33,
-      "comfort": 7.94,
-      "cleanliness": 6.85,
-      "staff": 6.66,
-      "location": 7.97
+      "overall": 7.45,
+      "food": 5.78,
+      "comfort": 7.29,
+      "cleanliness": 6.01,
+      "staff": 6.52,
+      "location": 7.28,
+      "facilities": 5.04
     },
     {
       "quarter": "2017Q1",
-      "overall": 8.81,
-      "food": 6.7,
-      "comfort": 8.06,
-      "cleanliness": 7.0,
-      "staff": 7.84,
-      "location": 7.63
+      "overall": 8.56,
+      "food": 6.62,
+      "comfort": 7.23,
+      "cleanliness": 7.43,
+      "staff": 7.12,
+      "location": 8.06,
+      "facilities": 6.76
     },
     {
       "quarter": "2017Q2",
-      "overall": 8.56,
-      "food": 6.7,
-      "comfort": 6.86,
-      "cleanliness": 7.1,
-      "staff": 6.77,
-      "location": 7.29
+      "overall": 7.51,
+      "food": 5.83,
+      "comfort": 7.24,
+      "cleanliness": 4.64,
+      "staff": 7.11,
+      "location": 6.95,
+      "facilities": 6.02
     },
     {
       "quarter": "2017Q3",
-      "overall": 8.53,
-      "food": 7.33,
-      "comfort": 8.04,
-      "cleanliness": 7.06,
-      "staff": 7.93,
-      "location": 7.61
+      "overall": 7.44,
+      "food": 7.59,
+      "comfort": 7.36,
+      "cleanliness": 2.11,
+      "staff": 3.63,
+      "location": 7.46,
+      "facilities": 2.7
     }
   ],
   "dimension_comments": [
     {
       "name": "Food",
-      "total": 887,
-      "negative": 263
+      "total": 162,
+      "negative": 45
     },
     {
       "name": "Comfort",
-      "total": 687,
-      "negative": 127
+      "total": 173,
+      "negative": 44
     },
     {
       "name": "Cleanliness",
-      "total": 442,
-      "negative": 104
+      "total": 87,
+      "negative": 38
     },
     {
       "name": "Staff",
-      "total": 1109,
-      "negative": 300
+      "total": 225,
+      "negative": 64
     },
     {
       "name": "Location",
-      "total": 855,
-      "negative": 142
+      "total": 188,
+      "negative": 39
+    },
+    {
+      "name": "Facilities",
+      "total": 112,
+      "negative": 51
     }
   ],
   "category_comments": {
     "Food": [
       {
         "sentiment": "positive",
-        "text": "The staff were so nice and the breakfast was delicious and our bed was super big and",
-        "nationality": "United Kingdom",
+        "text": "a new one Bit confusing Secondly the on site restaurant is a bit lacking very well thought out and e (...) very well thought out and excellent quality food for anyone of a vegetarian or vegan backgrou",
+        "nationality": "Ireland",
         "date": "8/3/2017"
       },
       {
         "sentiment": "positive",
-        "text": "Bed was amazingly comfortable . The breakfast in the executive lounge could have been bett (...) by having hash browns so that a full English breakfast could be eaten and more choice of cereals",
-        "nationality": "India",
-        "date": "7/29/2017"
+        "text": "good and staff were ok It is cute hotel the breakfast range is nice Will go back . Rooms are nice (...) nside the rooms are very very basic just tea coffee and boiler and no bar empty fridge",
+        "nationality": "Australia",
+        "date": "7/31/2017"
       },
       {
         "sentiment": "positive",
-        "text": "the room excellent very clean room love the Bar and the service . Can't fault it",
-        "nationality": "United Kingdom",
-        "date": "7/26/2017"
+        "text": "Good restaurant with modern design great chill out place Gre",
+        "nationality": "Poland",
+        "date": "7/24/2017"
       },
       {
         "sentiment": "positive",
-        "text": "pful and willing to offer assistance anytime breakfast was delicious and the staff working there ar",
-        "nationality": "Oman",
-        "date": "7/25/2017"
-      },
-      {
-        "sentiment": "negative",
-        "text": "and tidy and the rooms were nice and big The breakfast was great . The rooms were far too hot no wi",
+        "text": "location Set in a lovely park friendly staff Food high quality We Oth enjoyed the breakfast .",
         "nationality": "United Kingdom",
-        "date": "7/18/2017"
+        "date": "7/17/2017"
       },
       {
         "sentiment": "negative",
-        "text": "e tube station The executive lounge provides breakfast and free drink Tastes OK for free breakfast",
+        "text": "Great location in nice surroundings the bar and restaurant are nice and have a lovely ou",
         "nationality": "United Kingdom",
-        "date": "7/14/2017"
+        "date": "7/31/2017"
       },
       {
         "sentiment": "negative",
-        "text": "ets Were Clean Rooms Were Pleasent . Brekkie Buffet Not Large Enough For A 5 Star Spread Cld Hav",
-        "nationality": "Singapore",
-        "date": "7/12/2017"
+        "text": "ff pointed us in the wrong direction No late dinner bar closes at 1 am Ugly view on trash lorry",
+        "nationality": "France",
+        "date": "7/6/2017"
       },
       {
         "sentiment": "negative",
-        "text": "re was a tray with a kettle for your tea and coffee needs but it contained three small cups thre (...) contained three small cups three sachets of coffee three decaf coffee two teabags two lemon and",
+        "text": "The breakfast was the only positive element of this hotel (...) and a good selection of selection of health food dishes on the buffet We did not try the rest",
+        "nationality": "France",
+        "date": "6/12/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "Friendly staff The bar restaurant area is lovely and overlooks the",
         "nationality": "United Kingdom",
-        "date": "7/5/2017"
+        "date": "5/11/2017"
       }
     ],
     "Comfort": [
       {
         "sentiment": "positive",
-        "text": "nice and the breakfast was delicious and our bed was super big and super comfortable . The sw",
+        "text": "The room is spacious and bright The hotel is located in a quiet a (...) e our sheet and duvet everyday but just made bed They also didn't clean the floor and change",
         "nationality": "United Kingdom",
-        "date": "8/3/2017"
+        "date": "7/17/2017"
       },
       {
         "sentiment": "positive",
-        "text": "ble to help The hotel is clean and the rooms spacious and beautifully decorated The location is id",
+        "text": "Rooms were stunningly decorated and really spacious in the top of the building Pictures are of r",
         "nationality": "United Kingdom",
-        "date": "8/2/2017"
+        "date": "7/7/2017"
       },
       {
         "sentiment": "positive",
-        "text": "Bed was amazingly comfortable . The breakfast in",
-        "nationality": "India",
-        "date": "7/29/2017"
+        "text": "Comfy bed good location . The floor in my room was",
+        "nationality": "United Kingdom",
+        "date": "7/6/2017"
       },
       {
         "sentiment": "positive",
-        "text": "The staff were very helpful and friendly beds were comfortable and love the pillows view f",
-        "nationality": "United Kingdom",
-        "date": "7/26/2017"
+        "text": "ion for its unique structure and location My spacious and comfortable room had a large double pane",
+        "nationality": "Italy",
+        "date": "7/4/2017"
       },
       {
         "sentiment": "negative",
-        "text": "The room was spacious and comfortable . Lighting was poor I was a",
+        "text": "of in my room was leaking luckily not on the bed you could also see signs of earlier water da (...) y late around midnight when I was already in bed and ready to sleep",
         "nationality": "United Kingdom",
-        "date": "7/26/2017"
+        "date": "7/31/2017"
       },
       {
         "sentiment": "negative",
-        "text": "l . Again poor water pressure it can be more comfortable if the water pressure is higher Parking is v",
-        "nationality": "United Kingdom",
-        "date": "7/14/2017"
+        "text": "The room was big enough and the bed is good The breakfast food and service on th (...) ondition makes so much noise and its hard to sleep at night",
+        "nationality": "Norway",
+        "date": "7/8/2017"
       },
       {
         "sentiment": "negative",
-        "text": "ndard room with extra fittings We only had 1 comfortable chair between us The term suite was not how",
-        "nationality": "United Kingdom",
-        "date": "7/9/2017"
+        "text": "ful park and have a nice interior design The bed was really comfortable . Sadly I cannot say (...) cky like juice or something just next to our bed We called the front desk and they said they",
+        "nationality": "Germany",
+        "date": "6/10/2017"
       },
       {
         "sentiment": "negative",
-        "text": "ttle . An absolute rip off Appalling service Uncomfortable bed Useless bar staff Rude and despicable be",
-        "nationality": "United Kingdom",
-        "date": "7/1/2017"
+        "text": "ery slippery No shower chair handles or bars Bed was uncomfortable and mattress pad was too b",
+        "nationality": "United States of America",
+        "date": "5/11/2017"
       }
     ],
     "Cleanliness": [
       {
         "sentiment": "positive",
-        "text": "r comfortable . The swimming pool wasn't as clean as I thought it would be but everything else",
+        "text": "Even though the pictures show very clean rooms the actual room was quit dirty and out",
+        "nationality": "Belgium",
+        "date": "7/9/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "ies weren't updated daily And the floor was dusty and had hair on it and that was upon our arr",
+        "nationality": "Australia",
+        "date": "6/20/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "and advice Wonderful bright comfortable and clean rooms Beds are amazing felt as if we were sl (...) s if we were sleeping on clouds Bathroom was clean spacious and airy We had Shampoo Body wash t",
         "nationality": "United Kingdom",
+        "date": "5/25/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "ive Set in a beautiful location The room was clean well decorated and the bed was one of the mo",
+        "nationality": "United Kingdom",
+        "date": "3/29/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "of a bio weapon at least i guessed so by the smell of it I intimately asked to change the room",
+        "nationality": "Russia",
         "date": "8/3/2017"
       },
       {
-        "sentiment": "positive",
-        "text": "ut hotel provided us with a fan and room did smell a bit damp otherwise perfect",
+        "sentiment": "negative",
+        "text": "also has quite some character . My room was dirty and I was afraid to walk barefoot on the flo (...) t on the floor which looked as if it was not cleaned in weeks White furniture which looked nice i",
         "nationality": "United Kingdom",
-        "date": "8/2/2017"
-      },
-      {
-        "sentiment": "positive",
-        "text": "did everything possible to help The hotel is clean and the rooms spacious and beautifully decor",
-        "nationality": "United Kingdom",
-        "date": "8/2/2017"
-      },
-      {
-        "sentiment": "positive",
-        "text": "its about 2 minutes walk the hotel Its very clean and the staff on the front desk are helpful",
-        "nationality": "United Kingdom",
-        "date": "7/29/2017"
+        "date": "7/31/2017"
       },
       {
         "sentiment": "negative",
-        "text": "The Hotel was clean and tidy and the rooms were nice and big The",
+        "text": "l is located in a quiet and beautiful park . Cleaner did not change our sheet and duvet everyday (...) everyday but just made bed They also didn't clean the floor and changed the body gel when we r",
         "nationality": "United Kingdom",
-        "date": "7/18/2017"
+        "date": "7/17/2017"
       },
       {
         "sentiment": "negative",
-        "text": "he sink was clogged the counter had horrible stains over all cleanliness was lacking",
-        "nationality": "Pakistan",
-        "date": "7/18/2017"
-      },
-      {
-        "sentiment": "negative",
-        "text": "as it claimed there would be the carpet was stained in various places and the TV did not work pr (...) he Hilton and it was far superior spotlessly clean nothing was too much trouble and you did not",
+        "text": "od location . The floor in my room was filfy dirty Very basic rooms I had a 20yr old tv in my r",
         "nationality": "United Kingdom",
-        "date": "7/5/2017"
-      },
-      {
-        "sentiment": "negative",
-        "text": "The strong smell of liniment in the room The fact that more w",
-        "nationality": "United Kingdom",
-        "date": "7/1/2017"
+        "date": "7/6/2017"
       }
     ],
     "Staff": [
       {
         "sentiment": "positive",
-        "text": "The staff were so nice and the breakfast was delicious",
+        "text": "Location was good and staff were ok It is cute hotel the breakfast range",
+        "nationality": "Australia",
+        "date": "7/31/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "Good location Set in a lovely park friendly staff Food high quality We Oth enjoyed the b",
         "nationality": "United Kingdom",
+        "date": "7/17/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "able room I'll come back for sure there The staff very gentle one Spanish man really really go",
+        "nationality": "Italy",
+        "date": "7/3/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "le The hotel is lovely and the bed was comfy Staff were very friendly and helpful and familiari",
+        "nationality": "Ireland",
+        "date": "6/30/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "red a room but only the next day SO i had to check out the next day before 11 o clock in order to g (...) day So we had to wait till 13 00 in order to check in my new room what a wonderful waist of my tim",
+        "nationality": "Russia",
         "date": "8/3/2017"
       },
       {
-        "sentiment": "positive",
-        "text": "service was great doorman really good and receptioni",
-        "nationality": "United Kingdom",
-        "date": "8/2/2017"
-      },
-      {
-        "sentiment": "positive",
-        "text": "The staff were very friendly and did everything possib",
-        "nationality": "United Kingdom",
-        "date": "8/2/2017"
-      },
-      {
-        "sentiment": "positive",
-        "text": "otel due to the beautiful treatment from the staff to the residents in the hotelso I thought it (...) thank eveyone for their assistance and warm welcoming . Nothing",
-        "nationality": "Oman",
-        "date": "7/30/2017"
+        "sentiment": "negative",
+        "text": "at location surroundings rooms amenities and service Two recommendations however firstly the staf (...) commendations however firstly the staff upon check in are very confusing regarding deposit payment",
+        "nationality": "Ireland",
+        "date": "8/3/2017"
       },
       {
         "sentiment": "negative",
-        "text": "to the Designer Outlets . Terrible customer service in particular the bell boy who was rude The",
-        "nationality": "Hong Kong",
-        "date": "7/20/2017"
+        "text": "ngry dog My shower drain was clogged and the staff did not respond to my request to clean it On (...) omplained about water damage the night shift manager offered to move me to a different room but t",
+        "nationality": "United Kingdom",
+        "date": "7/31/2017"
       },
       {
         "sentiment": "negative",
-        "text": "The way the manager delt with my concerns . A staff member walke",
-        "nationality": "United Kingdom",
-        "date": "7/11/2017"
-      },
-      {
-        "sentiment": "negative",
-        "text": "spacious . The quality of breakfast and room service was mediocre at best That such a prominent h",
-        "nationality": "United Kingdom",
-        "date": "7/7/2017"
-      },
-      {
-        "sentiment": "negative",
-        "text": "lease make up my room sign so had to ask for service one day and woken 8am another",
-        "nationality": "United Kingdom",
-        "date": "7/1/2017"
+        "text": "en we arrived that's room was booked and the staff told me we could only book the villa suite t",
+        "nationality": "New Zealand",
+        "date": "7/24/2017"
       }
     ],
     "Location": [
       {
         "sentiment": "positive",
-        "text": "so Mohan in dinning room was exceptional and location perfect for daughters graduation at Wembley",
-        "nationality": "United Kingdom",
-        "date": "8/2/2017"
+        "text": "No real complaints the hotel was great great location surroundings rooms amenities and service Two",
+        "nationality": "Ireland",
+        "date": "8/3/2017"
       },
       {
         "sentiment": "positive",
-        "text": "rooms spacious and beautifully decorated The location is ideal although it is out of central Londo (...) hough it is out of central London there is a station close by with regular services . Parking was",
-        "nationality": "United Kingdom",
-        "date": "8/2/2017"
+        "text": "Location was good and staff were ok It is cute hotel",
+        "nationality": "Australia",
+        "date": "7/31/2017"
       },
       {
         "sentiment": "positive",
-        "text": "traveling to wembley as its about 2 minutes walk the hotel Its very clean and the staff on th",
-        "nationality": "United Kingdom",
-        "date": "7/29/2017"
+        "text": "dern design great chill out place Great park nearby the hotel and awesome main stairs . Backyard",
+        "nationality": "Poland",
+        "date": "7/24/2017"
       },
       {
         "sentiment": "positive",
-        "text": "iva for her great supervision hilton wembley located in very attractive area surrounding with out (...) nts and 10 mintue by the train to Paddington station which is another advantage As usual hilton h",
-        "nationality": "Oman",
-        "date": "7/25/2017"
-      },
-      {
-        "sentiment": "negative",
-        "text": "The hotel is close to the Designer Outlets . Terrible customer",
-        "nationality": "Hong Kong",
-        "date": "7/20/2017"
-      },
-      {
-        "sentiment": "negative",
-        "text": "go down to 18 C and it certainly was nowhere near that we were melting",
+        "text": "The room is spacious and bright The hotel is located in a quiet and beautiful park . Cleaner did",
         "nationality": "United Kingdom",
-        "date": "7/18/2017"
+        "date": "7/17/2017"
       },
       {
         "sentiment": "negative",
-        "text": "upgraded with my Hilton membership card Good location close to the tube station The executive loun",
+        "text": "Great location in nice surroundings the bar and restaurant (...) estaurant are nice and have a lovely outdoor area The building also has quite some character .",
         "nationality": "United Kingdom",
-        "date": "7/14/2017"
+        "date": "7/31/2017"
       },
       {
         "sentiment": "negative",
-        "text": "hat day and said sausages seemed undercooked Location for Wembley was perfect even though our conc (...) pensive for relatively basic room Paying for location presumably",
+        "text": "Amazing location and building Romantic setting . You When I b",
+        "nationality": "New Zealand",
+        "date": "7/24/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "l there is a big park which is very good for walk in the morning and evening Many people are h",
+        "nationality": "Norway",
+        "date": "7/8/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "Style location rooms . 6 30 AM started big noise workers lo",
+        "nationality": "France",
+        "date": "7/6/2017"
+      }
+    ],
+    "Facilities": [
+      {
+        "sentiment": "positive",
+        "text": "stayed in was lacking in space a bit and the bathroom was very badly lit to use the mirror in ther",
+        "nationality": "Ireland",
+        "date": "6/30/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "the window was broken and the drains in the bathroom smelt Its an old building and clearly has ol",
+        "nationality": "Netherlands",
+        "date": "6/29/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "with friendly staff shampoo and soap in the shower Tea and coffee facilities in your room and i",
         "nationality": "United Kingdom",
-        "date": "7/5/2017"
+        "date": "5/27/2017"
+      },
+      {
+        "sentiment": "positive",
+        "text": "f right Friendly and helpful staff I'm . The bathroom in our room was a black glass box It theory (...) ivacy not enough light at the mirror and the shower leaked into the hall It did however allow fo",
+        "nationality": "United States of America",
+        "date": "5/25/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "oked like it was attacked by an angry dog My shower drain was clogged and the staff did not resp (...) the bed you could also see signs of earlier water damage I also saw insects running on the flo",
+        "nationality": "United Kingdom",
+        "date": "7/31/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "urbing the lighting was too weak and a black bathroom is the worst design disaster one can imagine",
+        "nationality": "France",
+        "date": "6/12/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "e wall in the room on the curtain and in the bathroom there's a lot of stains which I had to ignor (...) ust wanted to have a good sleep at least The parking place was small but ok When we arrived the t",
+        "nationality": "Germany",
+        "date": "6/10/2017"
+      },
+      {
+        "sentiment": "negative",
+        "text": "Our bathroom had an urine order Shower was very slippery (...) d an urine order Shower was very slippery No shower chair handles or bars Bed was uncomfortable",
+        "nationality": "United States of America",
+        "date": "5/11/2017"
       }
     ]
   },
   "competitor_gaps": [
     {
-      "competitor": "Crowne Plaza London The City",
-      "Food": -2.04,
-      "Comfort": -0.35,
-      "Cleanliness": -0.96,
-      "Staff": -1.19,
-      "Location": -1.11
+      "competitor": "Best Western Aulivia Op ra",
+      "Food": 0.12,
+      "Comfort": -1.53,
+      "Cleanliness": -3.22,
+      "Staff": -1.01,
+      "Location": 0.56,
+      "Facilities": -1.73
     },
     {
-      "competitor": "Great Northern Hotel A Tribute Portfolio Hotel London",
-      "Food": -0.98,
-      "Comfort": 0.52,
-      "Cleanliness": -1.1,
-      "Staff": -0.79,
-      "Location": -0.43
-    },
-    {
-      "competitor": "H tel France d Antin Op ra",
-      "Food": -1.86,
-      "Comfort": 0.5,
-      "Cleanliness": 0.32,
-      "Staff": -1.51,
-      "Location": -1.72
-    },
-    {
-      "competitor": "H tel de la Bourdonnais",
-      "Food": -0.61,
+      "competitor": "Hilton Vienna",
+      "Food": 0.69,
       "Comfort": 0.15,
-      "Cleanliness": -1.06,
-      "Staff": -1.39,
-      "Location": -0.66
+      "Cleanliness": 0.18,
+      "Staff": 1.59,
+      "Location": 0.08,
+      "Facilities": 0.89
     },
     {
-      "competitor": "Hotel America Barcelona",
-      "Food": -1.2,
-      "Comfort": -1.32,
-      "Cleanliness": -1.61,
-      "Staff": -2.38,
-      "Location": -0.66
+      "competitor": "Hotel Alimara",
+      "Food": -0.03,
+      "Comfort": -0.81,
+      "Cleanliness": -2.44,
+      "Staff": -0.31,
+      "Location": 0.24,
+      "Facilities": -1.17
+    },
+    {
+      "competitor": "Hotel Kavalier",
+      "Food": -0.14,
+      "Comfort": -0.04,
+      "Cleanliness": -1.72,
+      "Staff": 0.84,
+      "Location": 1.08,
+      "Facilities": -0.64
+    },
+    {
+      "competitor": "Paris Marriott Champs Elysees Hotel",
+      "Food": 1.29,
+      "Comfort": 3.2,
+      "Cleanliness": 4.11,
+      "Staff": 0.78,
+      "Location": 0.36,
+      "Facilities": 2.08
     }
   ],
   "vulnerabilities": [
     {
-      "competitor": "Crowne Plaza London The City",
-      "category": "Comfort",
-      "review": "Very good location comfortable rooms nice restaurant and friendly staff . I",
-      "highlights": [
-        "comfortable"
-      ]
-    },
-    {
-      "competitor": "Great Northern Hotel A Tribute Portfolio Hotel London",
-      "category": "Comfort",
-      "review": "turned on the heating i only had 5 hours to sleep before check out out of which 3 were spend t",
-      "highlights": [
-        "sleep"
-      ]
-    },
-    {
-      "competitor": "H tel France d Antin Op ra",
-      "category": "Cleanliness",
-      "review": "large room for standart booked rate The room smells of smoke like some pub At check out we were",
-      "highlights": [
-        "smells",
-        "smell"
-      ]
-    },
-    {
-      "competitor": "H tel de la Bourdonnais",
+      "competitor": "Best Western Aulivia Op ra",
       "category": "Food",
-      "review": "The hotel is undergoing refurbishment of the bar restaurant As a result the hotel is complete (...) result the hotel is completely dry the mini bar had only 4 soft drinks in it and you cannot",
+      "review": "d not far from the gare du Nord And chez Flo Breakfast was good except for the drinks . When the wa (...) waitress asked what we wanted in the way of drinks we asked for Tea What we got was a cup of ho",
       "highlights": [
-        "restaurant",
+        "Breakfast",
         "drinks"
       ]
     },
     {
-      "competitor": "Hotel America Barcelona",
-      "category": "Food",
-      "review": "onal and Passieg De Gracia station 2 Rooftop bar pool area is amazing 3 Room size was good 4 (...) had arrived no apology was given 2 Price of Food Beverages here is totally over priced 2 50 f",
+      "competitor": "Hilton Vienna",
+      "category": "Facilities",
+      "review": "r staying additional 70 euro per day No free wifi in rooms Very noisy starting early morning I",
       "highlights": [
-        "Food",
-        "bar"
+        "wifi"
+      ]
+    },
+    {
+      "competitor": "Hotel Alimara",
+      "category": "Facilities",
+      "review": "The size of the bathroom A supermarket close by the hotel The buildin (...) close by the hotel The building looks nice . Wifi does not work well poor No swimming pool in",
+      "highlights": [
+        "bathroom",
+        "pool"
+      ]
+    },
+    {
+      "competitor": "Hotel Kavalier",
+      "category": "Facilities",
+      "review": "was really reasonable Good breakfast . Poor WiFi signal it only worked when standing close to (...) oblems with temperature regulation under the shower random jumps from very cold to very hot wate",
+      "highlights": [
+        "shower",
+        "WiFi"
+      ]
+    },
+    {
+      "competitor": "Paris Marriott Champs Elysees Hotel",
+      "category": "Cleanliness",
+      "review": "e location of the hotel . I didn't like the smell in the rooms and the stuff are not doing the",
+      "highlights": [
+        "smell"
       ]
     }
   ],
@@ -39253,10 +39322,6 @@
     {
       "aspect": "Noise",
       "mentions_in_sample": 52363
-    },
-    {
-      "aspect": "Facilities",
-      "mentions_in_sample": 137830
     }
   ]
 }

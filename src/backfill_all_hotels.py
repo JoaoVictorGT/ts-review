@@ -72,10 +72,25 @@ def main() -> None:
     cur = conn.cursor()
     start = time.time()
 
+    # This script overwrites `data` wholesale (ON CONFLICT DO UPDATE), so any
+    # hotel that already has the teammate's score-improvement report merged in
+    # (see dashboard_data_prep.py's load_hotel_report()/main()) would silently
+    # lose SCORE_GOALS/ACTION_PLAN/ASPECT_DETAILS otherwise. Fetch those once
+    # up front and carry them forward for the hotels that have them.
+    report_keys = ("SCORE_GOALS", "ACTION_PLAN", "ASPECT_DETAILS")
+    cur.execute("SELECT hotel_slug, data FROM hotel_dashboard_data WHERE data ?| %s", (list(report_keys),))
+    preserved_report_data = {
+        row_slug: {k: row_data[k] for k in report_keys if k in row_data} for row_slug, row_data in cur.fetchall()
+    }
+    if preserved_report_data:
+        print(f"Preserving score-improvement report keys for: {', '.join(preserved_report_data)}")
+
     for i, hotel_name in enumerate(hotel_names, start=1):
         website_data = build_website_data(df, hotel_name, scores=scores, board=board)
         payload = json_safe({**website_data, **compute_derived(website_data, board, hotel_name)})
         slug = unique_slug_for(hotel_name, used_slugs)
+        if slug in preserved_report_data:
+            payload.update(preserved_report_data[slug])
 
         cur.execute(
             """
