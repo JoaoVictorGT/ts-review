@@ -6,6 +6,10 @@
 data/**/*.csv
 !data/.gitkeep
 
+# Teammate-provided model report (~23MB) — consumed once by dashboard_data_prep.py
+# and pushed into Neon per hotel; the file itself doesn't need to live in git.
+data/website_hotel_report.json
+
 # Large generated artifacts (regenerate locally; keep the small smoke-test sample)
 outputs/reviews_enriched.parquet
 outputs/*.csv

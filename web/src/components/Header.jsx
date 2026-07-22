@@ -2,13 +2,13 @@ import { Link, NavLink } from "react-router-dom"
 import Logo from "./Logo"
 import { useAuth } from "../hooks/useAuth"
 
-const LOGGED_OUT_LINKS = [
+export const LOGGED_OUT_LINKS = [
   { to: "/", label: "Methodology" },
   { to: "/dashboard", label: "Dashboard" },
   { to: "/pricing", label: "Pricing" },
 ]
 
-const LOGGED_IN_LINKS = [
+export const LOGGED_IN_LINKS = [
   { to: "/", label: "Methodology" },
   { to: "/dashboard", label: "Dashboard" },
   { to: "/quadrant", label: "Quadrant" },
