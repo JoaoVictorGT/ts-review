@@ -16,6 +16,7 @@ CATEGORY_META = [
     ("Cleanliness", "sparkles"),
     ("Staff", "users"),
     ("Location", "map-pin"),
+    ("Facilities", "wrench"),
 ]
 
 

@@ -12,6 +12,7 @@ export const CATEGORY_COLORS = {
   Cleanliness: "#06b6d4",
   Staff: "#8b5cf6",
   Location: "#22c55e",
+  Facilities: "#eab308",
 }
 
 // Quadrant page (2x2 price vs. audited-quality scatter) — still 100% mocked.
