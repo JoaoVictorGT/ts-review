@@ -1,23 +1,5 @@
 import { Link } from "react-router-dom"
-import { ShieldCheck, Search, Layers } from "lucide-react"
-
-const METHODOLOGY = [
-  {
-    icon: ShieldCheck,
-    title: "Independent Audit",
-    text: "Every stay is verified by external auditors, without interference from the rated hotels.",
-  },
-  {
-    icon: Layers,
-    title: "Full-Picture Scoring",
-    text: "Every score reflects a rigorous, multi-dimensional read of the stay — no corner of the guest experience goes unmeasured.",
-  },
-  {
-    icon: Search,
-    title: "Zero Fake Reviews",
-    text: "A closed methodology that eliminates manipulated reviews, unlike open platforms.",
-  },
-]
+import { ShieldCheck } from "lucide-react"
 
 export default function Home() {
   return (
@@ -54,26 +36,6 @@ export default function Home() {
               View plans
             </Link>
           </div>
-        </div>
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 pb-24">
-        <p className="text-center text-xs font-semibold tracking-wider text-slate-400 uppercase mb-10">
-          TrueStay Methodology
-        </p>
-        <div className="grid md:grid-cols-3 gap-6">
-          {METHODOLOGY.map(({ icon: Icon, title, text }) => (
-            <div
-              key={title}
-              className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
-            >
-              <div className="w-10 h-10 rounded-lg bg-sky-50 flex items-center justify-center mb-4">
-                <Icon className="w-5 h-5 text-sky-500" />
-              </div>
-              <h3 className="text-slate-900 font-medium mb-2">{title}</h3>
-              <p className="text-sm text-slate-500 leading-relaxed">{text}</p>
-            </div>
-          ))}
         </div>
       </div>
     </>

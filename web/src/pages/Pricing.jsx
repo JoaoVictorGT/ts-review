@@ -1,7 +1,5 @@
-import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Check } from "lucide-react"
-import { useAuth } from "../hooks/useAuth"
 
 const PLANS = [
   {
@@ -19,7 +17,7 @@ const PLANS = [
     id: "hotel_partner",
     name: "Hotel Partner",
     tagline: "For corporate travel managers.",
-    price: "$1,490",
+    price: "$350",
     period: "/mo",
     features: [
       "Unlimited consolidated reports",
@@ -30,48 +28,20 @@ const PLANS = [
     cta: "Subscribe to Hotel Partner",
     ctaClass: "bg-gradient-to-r from-sky-400 to-blue-600 text-white shadow-sm hover:shadow-md",
     highlight: true,
-  },
-  {
-    id: "corporate",
-    name: "Corporate",
-    tagline: "For chains and luxury agencies.",
-    price: "Custom pricing",
-    period: "",
-    features: [
-      "Everything in Hotel Partner",
-      "Dedicated diagnostic consulting",
-      "API integration",
-      "Dedicated account manager",
-    ],
-    cta: "Talk to an expert",
-    ctaClass: "bg-slate-900 text-white hover:bg-slate-800",
-    highlight: false,
+    disabled: true,
   },
 ]
 
+// /pricing is guest-only (see RequireGuest in App.jsx) — a logged-in hotel
+// never sees this page, so handleCta only needs the logged-out signup path.
 export default function Pricing() {
-  const { session, setPlan } = useAuth()
   const navigate = useNavigate()
-  const [busyPlan, setBusyPlan] = useState(null)
 
-  async function handleCta(plan) {
-    if (!session) {
-      // Only the free plan has a real signup flow today — the paid tiers
-      // have no checkout/payment integration yet, so leave them inert for
-      // logged-out visitors rather than pretending to start a subscription.
-      if (plan.id === "starter") navigate("/register?from=pricing")
-      return
-    }
-    // Already logged in (e.g. redirected here after registering outside the
-    // pricing flow, per Feature 4) — picking any plan here just records the
-    // choice and sends them to their dashboard.
-    setBusyPlan(plan.id)
-    try {
-      await setPlan(plan.id)
-      navigate("/dashboard")
-    } finally {
-      setBusyPlan(null)
-    }
+  function handleCta(plan) {
+    // Only the free plan has a real signup flow today — the paid tier has
+    // no checkout/payment integration yet (see the disabled button below),
+    // so its click never reaches here.
+    if (plan.id === "starter") navigate("/register?from=pricing")
   }
 
   return (
@@ -80,7 +50,7 @@ export default function Pricing() {
         <h1 className="text-3xl font-semibold text-slate-900">Plans and pricing</h1>
         <p className="text-slate-500 mt-3">Choose the right level of access to TrueStay's hotel intelligence.</p>
       </div>
-      <div className="grid md:grid-cols-3 gap-6 items-start">
+      <div className="grid md:grid-cols-2 gap-6 items-start max-w-3xl mx-auto">
         {PLANS.map((plan) => (
           <div
             key={plan.name}
@@ -107,13 +77,15 @@ export default function Pricing() {
                 </li>
               ))}
             </ul>
+            {/* TODO: integrate checkout when payment API is ready */}
             <button
               type="button"
-              onClick={() => handleCta(plan)}
-              disabled={busyPlan === plan.id}
-              className={`w-full text-sm font-medium rounded-lg py-2.5 transition-colors disabled:opacity-50 ${plan.ctaClass}`}
+              onClick={() => !plan.disabled && handleCta(plan)}
+              disabled={plan.disabled}
+              title={plan.disabled ? "Coming soon — payment integration isn't live yet" : undefined}
+              className={`w-full text-sm font-medium rounded-lg py-2.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${plan.ctaClass}`}
             >
-              {busyPlan === plan.id ? "Saving..." : plan.cta}
+              {plan.cta}
             </button>
           </div>
         ))}
