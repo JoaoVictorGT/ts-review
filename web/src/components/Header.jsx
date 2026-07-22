@@ -12,7 +12,6 @@ const LOGGED_IN_LINKS = [
   { to: "/", label: "Methodology" },
   { to: "/dashboard", label: "Dashboard" },
   { to: "/quadrant", label: "Quadrant" },
-  { to: "/pricing", label: "Pricing" },
 ]
 
 export default function Header() {
@@ -43,6 +42,15 @@ export default function Header() {
         </nav>
         {session ? (
           <div className="flex items-center gap-3">
+            {/* TODO: integrate checkout when payment API is ready */}
+            <button
+              type="button"
+              disabled
+              title="Coming soon — payment integration isn't live yet"
+              className="text-xs font-medium text-white bg-gradient-to-r from-sky-400 to-blue-600 rounded-full px-4 py-1.5 opacity-60 cursor-not-allowed"
+            >
+              Upgrade
+            </button>
             <span className="text-sm text-slate-600">{session.hotelName}</span>
             <button
               type="button"
