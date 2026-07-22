@@ -10,6 +10,7 @@ import { DashboardDataProvider } from "./context/DashboardDataContext"
 import { AuthProvider } from "./context/AuthContext"
 import { useAuth } from "./hooks/useAuth"
 import RequireAuth from "./components/RequireAuth"
+import RequireGuest from "./components/RequireGuest"
 
 function DashboardArea() {
   const { session } = useAuth()
@@ -26,7 +27,9 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path="pricing" element={<Pricing />} />
+          <Route element={<RequireGuest />}>
+            <Route path="pricing" element={<Pricing />} />
+          </Route>
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route element={<RequireAuth />}>
