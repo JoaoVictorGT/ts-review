@@ -20,6 +20,7 @@ from __future__ import annotations
 import json
 import os
 import time
+from pathlib import Path
 
 import psycopg2
 from dotenv import load_dotenv
@@ -27,14 +28,18 @@ from slugify import slugify
 
 from dashboard_data_prep import (
     INPUT_PATH,
+    PROJECT_ROOT,
     category_scores_by_hotel,
     build_website_data,
     compute_derived,
     json_safe,
     leaderboard,
+    load_hotel_report,
     load_reviews,
     sanitize_evidence_columns,
 )
+
+REPORT_KEYS = ("SCORE_GOALS", "ACTION_PLAN", "ASPECT_DETAILS")
 
 
 def unique_slug_for(hotel_name: str, used_slugs: set[str]) -> str:
@@ -75,21 +80,36 @@ def main() -> None:
     # This script overwrites `data` wholesale (ON CONFLICT DO UPDATE), so any
     # hotel that already has the teammate's score-improvement report merged in
     # (see dashboard_data_prep.py's load_hotel_report()/main()) would silently
-    # lose SCORE_GOALS/ACTION_PLAN/ASPECT_DETAILS otherwise. Fetch those once
-    # up front and carry them forward for the hotels that have them.
-    report_keys = ("SCORE_GOALS", "ACTION_PLAN", "ASPECT_DETAILS")
-    cur.execute("SELECT hotel_slug, data FROM hotel_dashboard_data WHERE data ?| %s", (list(report_keys),))
-    preserved_report_data = {
-        row_slug: {k: row_data[k] for k in report_keys if k in row_data} for row_slug, row_data in cur.fetchall()
-    }
-    if preserved_report_data:
-        print(f"Preserving score-improvement report keys for: {', '.join(preserved_report_data)}")
+    # lose SCORE_GOALS/ACTION_PLAN/ASPECT_DETAILS otherwise. Load the report
+    # once and re-merge it here too, so every hotel it covers gets it on every
+    # backfill run, not just whichever ones happened to have it before.
+    report_path = Path(os.environ.get("HOTEL_REPORT_PATH", PROJECT_ROOT / "data" / "website_hotel_report.json"))
+    report_by_slug = load_hotel_report(report_path) if report_path.exists() else {}
+    if report_by_slug:
+        print(f"Loaded score-improvement report: {len(report_by_slug)} hotels covered.")
+    else:
+        print(f"No score-improvement report found at {report_path} — SCORE_GOALS/etc. won't be touched this run.")
 
+    # Safety net for any hotel that already has report keys in Neon but isn't
+    # in report_by_slug for some reason (e.g. a differently-sourced report) —
+    # don't silently wipe those either.
+    cur.execute("SELECT hotel_slug, data FROM hotel_dashboard_data WHERE data ?| %s", (list(REPORT_KEYS),))
+    preserved_report_data = {
+        row_slug: {k: row_data[k] for k in REPORT_KEYS if k in row_data} for row_slug, row_data in cur.fetchall()
+    }
+
+    merged_count = 0
     for i, hotel_name in enumerate(hotel_names, start=1):
         website_data = build_website_data(df, hotel_name, scores=scores, board=board)
         payload = json_safe({**website_data, **compute_derived(website_data, board, hotel_name)})
         slug = unique_slug_for(hotel_name, used_slugs)
-        if slug in preserved_report_data:
+        report = report_by_slug.get(slug)
+        if report:
+            payload["SCORE_GOALS"] = report["score_goals"]
+            payload["ACTION_PLAN"] = report["action_plan"]
+            payload["ASPECT_DETAILS"] = report["aspect_details"]
+            merged_count += 1
+        elif slug in preserved_report_data:
             payload.update(preserved_report_data[slug])
 
         cur.execute(
@@ -114,7 +134,8 @@ def main() -> None:
     conn.commit()
     cur.close()
     conn.close()
-    print(f"\nDone. Pushed {total} hotels in {time.time() - start:.0f}s.")
+    print(f"\nDone. Pushed {total} hotels in {time.time() - start:.0f}s. "
+          f"{merged_count} had score-improvement report data merged in.")
 
 
 if __name__ == "__main__":
